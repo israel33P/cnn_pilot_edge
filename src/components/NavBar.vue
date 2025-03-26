@@ -3,14 +3,14 @@ defineProps<{ title: string }>()
 </script>
 
 <template>
-  <nav class="navbar-cnn mb-4">
+  <nav class="flex-layout fixed top-[0] h-[55px] p-1 shadow-md bg-cnn mb-4">
     <a href="/">
-      <img class="nav-image" src="../assets/images/CNNDesignWhite.png" alt="cnn-logo">
+      <img class="h-[55px] w-auto" src="../assets/images/CNNDesignWhite.png" alt="cnn-logo">
     </a>
-    <div class="container ml-1">
-      <h2 class="nav-title">{{ title }}</h2>
-      <ul class="d-flex">
-        <li class="ml-1 text-hover-secondary text-bold"><a href="/style-guide">Style Guide</a></li>
+    <div class="flex-layout my-[0] mx-auto py-[0] px-2">
+      <h2 class="text-2xl text-is-light font-medium">{{ title }}</h2>
+      <ul>
+        <li class="text-is-light hover:text-yellow-200"><a href="/style-guide">Style Guide</a></li>
       </ul>
     </div>
   </nav>
