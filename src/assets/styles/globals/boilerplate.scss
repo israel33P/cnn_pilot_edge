@@ -1,0 +1,19 @@
+html {
+    box-sizing: border-box;
+    font-size: 100%;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+    color: inherit;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: cnn_sans_display,helveticaneue,Helvetica,Arial,Utkal,sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}

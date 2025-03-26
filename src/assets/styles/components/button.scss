@@ -1,0 +1,49 @@
+@use '../util' as u;
+@use 'sass:map';
+@use 'sass:color';
+@use 'sass:meta';
+
+@mixin btn($bg-color: u.$light, $txt-color: u.$dark) {
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-block;
+    border: 0;
+    padding: u.$base-padding u.$base-padding * 2;
+    border-radius: u.$base-border-radius;
+    background-color: $bg-color;
+    color: $txt-color;
+    @if meta.type-of($bg-color) == color {
+        &:hover {
+            background-color: color.adjust($bg-color, $lightness: 8%);
+        }
+    }
+}
+
+.btn {
+    @include btn;
+    color: u.$dark;
+}
+
+.btn-outline {
+    @include btn(inherit, u.$light);
+    &:hover {
+        background-color: u.$light;
+        color: u.$dark;
+    }
+    border: u.$base-border-thickness solid u.$light;
+}
+
+@each $key, $val in u.$colors {
+    .btn-#{$key} {
+        @include btn(map.get($val, 'main'), map.get($val, 'contrast'));
+    }
+    .btn-outline-#{$key} {
+        @include btn(inherit, map.get($val, 'main'));
+        &:hover {
+            background-color: map.get($val, 'main');
+            color: map.get($val, 'contrast');
+        }
+        border: u.$base-border-thickness solid map.get($val, 'main');
+    }
+}

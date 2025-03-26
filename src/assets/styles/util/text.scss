@@ -1,0 +1,34 @@
+@use '../util/variables' as var;
+@use 'sass:math';
+@use 'sass:map';
+
+$text-util: (
+    "font-weight": (
+        "default": normal,
+        "bold": bold,
+        "black": 900,
+        "thin": 200,
+        "thiner": 100
+    ),
+    "font-style": (
+        "italic": italic,
+        "oblique": oblique,
+        "initial": initial,
+        "inherit": inherit
+    )
+);
+
+// generating util classes
+@each $property, $values in $text-util {
+    @each $k, $v in $values {
+        @if($k == "default") {
+            .text {
+                #{$property}: $v;
+            }
+        } @else {
+            .text-#{$k} {
+                #{$property}: $v;
+            }
+        }
+    }
+}

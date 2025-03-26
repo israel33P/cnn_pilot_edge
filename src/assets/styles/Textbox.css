@@ -1,0 +1,27 @@
+.TextBox {
+    margin-bottom: auto;
+}
+.TextBox.top, .TextBox.bottom {
+    display: block;
+}
+.TextBox.left, .TextBox.right {
+    display: flex;
+    flex-wrap: wrap;
+}
+.TextBox > p {
+    padding: 0px;
+    margin: 0px 5px;
+    color: v-bind('testC');
+}
+.RootTextBox {
+    margin: 3px;
+    position: relative;
+    display:flex;
+}
+input {
+    position: relative;
+}
+textarea {
+    resize: none;
+    position: relative;
+}
