@@ -2,15 +2,44 @@
 
 @theme {
   --color-cnn: #cc0000;
+  --color-is-light-m: hsl(0, 16%, 96%);
+  --color-is-dark-m: hsl(202, 16%, 16%);
   --color-is-light: white;
   --color-is-gray: #404040;
   --color-is-dark: #353535;
+  --color-primary: #2dd5f3;
+  --color-secondary: #fcda1c;
+  --color-tertiary: #b1b8b9;
+  --color-success: #27a745;
+  --color-info: #16a2b8;
+  --color-warning: #ffc106;
+  --color-danger: #dc3544; 
 
   --spacing: 0.75rem;
 }
 
 @layer components {
+  html {
+    box-sizing: border-box;
+    font-size: 100%;
+  }
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+    color: inherit;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-is-dark-m);
+    color: var(--color-is-light-m);
+  }
+
   .flex-layout {
     @apply w-full flex items-center place-content-between box-border
+  }
+  .card {
+    @apply block p-0 border-2 border-solid border-is-light-m shadow-xl rounded-lg
   }
 }

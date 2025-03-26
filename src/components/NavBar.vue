@@ -3,7 +3,7 @@ defineProps<{ title: string }>()
 </script>
 
 <template>
-  <nav class="flex-layout fixed top-[0] h-[55px] p-1 shadow-md bg-cnn mb-4">
+  <nav class="flex-layout fixed top-[0] h-[55px] p-1 shadow-xl bg-cnn mb-4">
     <a href="/">
       <img class="h-[55px] w-auto" src="../assets/images/CNNDesignWhite.png" alt="cnn-logo">
     </a>

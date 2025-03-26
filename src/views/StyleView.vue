@@ -4,29 +4,27 @@
 
 <template>
   <NavBar title="STYLE GUIDE"></NavBar>
-  <div class="container content-under">
+  <div class="w-full max-w-[1600px] mb-0 mt-2 mx-auto pb-0 pt-[55px] px-[20px] box-border">
     <h2>Colors</h2>
-    <span class="text-primary">primary</span> |
-    <span class="text-secondary">secondary</span> |
-    <span class="text-tertiary">tertiary</span> |
-    <span class="text-success">success</span> |
-    <span class="text-info">info</span> |
-    <span class="text-warning">warning</span> |
-    <span class="text-danger">danger</span> |
-    <span class="text-green">green</span> |
-    <span class="text-cnn">CNN</span>
+    <span class="text-primary">text-primary</span> |
+    <span class="text-secondary">text-secondary</span> |
+    <span class="text-tertiary">text-tertiary</span> |
+    <span class="text-success">text-success</span> |
+    <span class="text-info">text-info</span> |
+    <span class="text-warning">text-warning</span> |
+    <span class="text-danger">text-danger</span> |
+    <span class="text-cnn">text-cnn</span>
 
     <br><br>
 
-    <span class="primary">primary</span> |
-    <span class="secondary">secondary</span> |
-    <span class="tertiary">tertiary</span> |
-    <span class="success">success</span> |
-    <span class="info">info</span> |
-    <span class="warning">warning</span> |
-    <span class="danger">danger</span> |
-    <span class="green">green</span> |
-    <span class="cnn">CNN</span>
+    <span class="bg-primary text-is-dark p-1 rounded-lg">bg-primary</span> |
+    <span class="bg-secondary text-is-dark p-1 rounded-lg">bg-secondary</span> |
+    <span class="bg-tertiary text-is-dark p-1 rounded-lg">bg-tertiary</span> |
+    <span class="bg-success p-1 rounded-lg">bg-success</span> |
+    <span class="bg-info p-1 rounded-lg">bg-info</span> |
+    <span class="bg-warning text-is-dark p-1 rounded-lg">bg-warning</span> |
+    <span class="bg-danger p-1 rounded-lg">bg-danger</span> |
+    <span class="bg-cnn p-1 rounded-lg">bg-cnn</span>
     
     <hr class="mt-4 mb-4">
 
