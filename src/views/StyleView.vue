@@ -5,7 +5,7 @@
 <template>
   <NavBar title="STYLE GUIDE"></NavBar>
   <div class="w-full max-w-[1600px] mb-0 mt-2 mx-auto pb-0 pt-[55px] px-[20px] box-border">
-    <h2>Colors</h2>
+    <h2 class="mb-2">Colors</h2>
     <span class="text-primary">text-primary</span> |
     <span class="text-secondary">text-secondary</span> |
     <span class="text-tertiary">text-tertiary</span> |
@@ -29,16 +29,23 @@
     <hr class="mt-4 mb-4">
 
     <h2 class="mb-2">Font Sizes</h2>
-    <div class="font-sm">this is small font</div>
-    <div class="font-md">this is medium font</div>
-    <div class="font-lg">this is large font</div>
-    <div class="font-xl">this is extra large font</div>
-    <div class="font-xll">this is extra, extra large font</div>
+    <div class="text-sm">this is small font</div>
+    <div class="text-base">this is medium font</div>
+    <div class="text-lg">this is large font</div>
+    <div class="text-xl">this is extra large font</div>
+    <div class="text-2xl">this is extra large x2 font</div>
+    <div class="text-3xl">this is extra large x3 font</div>
+    <div class="text-4xl">this is extra large x4 font</div>
+    <div class="text-5xl">this is extra large x5 font</div>
+    <div class="text-6xl">this is extra large x6 font</div>
+    <div class="text-7xl">this is extra large x7 font</div>
+    <div class="text-8xl">this is extra large x8 font</div>
+    <div class="text-9xl">this is extra large x9 font</div>
     
     <hr class="mt-4 mb-4">
     
 
-    <h2>Buttons</h2>
+    <h2 class="mb-2">Buttons</h2>
     <div class="row">
       <button class="btn-primary mr-1">Primary button</button>
       <button class="btn-outline-primary mr-1">Primary buttons</button>
@@ -50,15 +57,15 @@
     <hr class="mt-4 mb-4">
 
     <h2 class="mb-2">Badges</h2>
-    <div class="row">
-      <div class="badge">Badge</div>
-      <div class="badge-primary">Prim</div>
-      <div class="badge-cnn">CNN</div>
+    <div class="flex flex-row">
+      <div class="badge bg-neutral-300 text-neutral-700">Badge</div>
+      <div class="badge bg-primary text-is-dark">Prim</div>
+      <div class="badge bg-cnn">CNN</div>
     </div>
 
     <hr class="mt-4 mb-4">
 
-    <h2>Cards</h2>
+    <h2 class="mb-2">Cards</h2>
     <div class="card">
       <h1 class="card-title">Card Title Here</h1>
       <p class="card-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi quaerat, laboriosam incidunt saepe earum autem,
