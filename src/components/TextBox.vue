@@ -169,21 +169,21 @@
 </script>
 
 <template>
-    <div :class="TextBoxVal">
-        <p v-if="props.label && isTopOrLeft">{{ props.label }}</p>
-        <div class="RootTextBox" v-if="maxLines < 2">
-            <input type="text"
+    <div class="m-0 p-0">
+        <!--<p v-if="props.label && isTopOrLeft">{{ props.label }}</p>-->
+        <div class="relative flex" v-if="maxLines < 2">
+            <input class="relative w-full box-border border-is-light border-solid border-2 rounded-md"
+                type="text"
                 :value="props.value ? props.value : textVal"
                 @keydown="keydown"
                 @input="(e: Event)=>{onValueChanged((e.target as HTMLInputElement).value, e)}"
-            >
-                <div class="GuideGrp" v-for="(val, idx) in mainGuides" :key="idx">
-                    <div :style="val.style" />
-                </div>
-            </input>
+            />
+            <div class="" v-for="(val, idx) in mainGuides" :key="idx">
+                <div :style="val.style" />
+            </div>
         </div>
-        <div class="RootTextBox" v-if="maxLines >= 2">
-            <textarea
+        <div class="relative flex" v-if="maxLines >= 2">
+            <textarea class="relative w-full box-border resize-none border-is-light border-solid border-2 rounded-md"
                    @input="(e:Event)=>{onValueChanged((e.target as HTMLInputElement).value, e)}"
                    @keydown="keydown" 
                    wrap="off"
@@ -194,7 +194,7 @@
                 <div :style="val.style" />
             </div>
         </div>
-        <p v-if="props.label && !isTopOrLeft">{{ props.label }}</p>
+        <!--<p v-if="props.label && !isTopOrLeft">{{ props.label }}</p>-->
     </div>
 </template>
 

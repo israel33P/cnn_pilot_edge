@@ -68,19 +68,21 @@
     <div v-if="showHeader">
       <div class="Row">
         <TextBox field="Title" v-if="!busy || queryDev"
+            class="my-1 w-full pr-10"
             label-position="top"
             label="Title" 
             capitalize="true"
             @number-of-lines="onTitleLineAmtChanged"
             :max-lines="titleLinesAmt"
             :guides="[
-              { position: 25, color: 'rgb(0, 190, 0)', alignment: 'horizontal' },
-              { position: 73, color: '#FF00FF84' }
+              { position: guidePositions[0], color: 'rgb(0, 190, 0)', alignment: 'horizontal' },
+              { position: guidePositions[1], color: '#FF00FF84' }
             ]"
         />
       </div>
       <div class="Row" v-if="showHeaderTxt === '2'">
         <TextBox field="Subtitle" v-if="!busy || queryDev"
+            class="my-1 w-full pr-10"
             label="Subtitle"
             label-position="top"
             :guides="[

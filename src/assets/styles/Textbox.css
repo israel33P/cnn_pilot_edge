@@ -18,9 +18,6 @@
     position: relative;
     display:flex;
 }
-input {
-    position: relative;
-}
 textarea {
     resize: none;
     position: relative;
