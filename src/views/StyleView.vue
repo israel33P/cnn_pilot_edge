@@ -44,39 +44,35 @@
     
     <hr class="mt-4 mb-4">
     
-
     <h2 class="mb-2">Buttons</h2>
-    <div class="row">
-      <button class="bg-primary mr-1">Primary button</button>
-      <button class="bg-secondary mr-1">Secondary button</button>
-      <button class="bg-tertiary mr-1">Tertiary button</button>
-      <button class="bg-success mr-1">Success button</button>
-      <button class="bg-info mr-1 text-is-light">Info button</button>
-      <button class="bg-warning mr-1">Warning button</button>
-      <button class="bg-danger mr-1 text-is-light">Danger button</button>
-      <button class="bg-cnn mr-1 text-white">CNN button</button>
-      <button class="btn mr-1">Default button</button>
-    </div>
+    <button class="bg-primary mr-1">Primary button</button>
+    <button class="bg-secondary mr-1">Secondary button</button>
+    <button class="bg-tertiary mr-1">Tertiary button</button>
+    <button class="bg-success mr-1">Success button</button>
+    <button class="bg-info mr-1 text-is-light">Info button</button>
+    <button class="bg-warning mr-1">Warning button</button>
+    <button class="bg-danger mr-1 text-is-light">Danger button</button>
+    <button class="bg-cnn mr-1 text-white">CNN button</button>
+    <button class="btn mr-1">Default button</button>
+
     <h4 class="my-2">Outlined buttons</h4>
-    <div class="row">
-      <button class="btn-outline mr-1 border-primary text-primary
+    <button class="btn-outline mr-1 border-primary text-primary
       hover:text-is-dark hover:bg-primary">Primary buttons</button>
-      <button class="btn-outline mr-1 border-secondary text-secondary
+    <button class="btn-outline mr-1 border-secondary text-secondary
       hover:text-is-dark hover:bg-secondary">Secondary buttons</button>
-      <button class="btn-outline mr-1 border-tertiary text-tertiary
+    <button class="btn-outline mr-1 border-tertiary text-tertiary
       hover:text-is-dark hover:bg-tertiary">Tertiarty buttons</button>
-      <button class="btn-outline mr-1 border-success text-success
+    <button class="btn-outline mr-1 border-success text-success
       hover:text-is-dark hover:bg-success">Success buttons</button>
-      <button class="btn-outline mr-1 border-info text-info
+    <button class="btn-outline mr-1 border-info text-info
       hover:text-is-light hover:bg-info">Info buttons</button>
-      <button class="btn-outline mr-1 border-warning text-warning
+    <button class="btn-outline mr-1 border-warning text-warning
       hover:text-is-dark hover:bg-warning">Warning buttons</button>
-      <button class="btn-outline mr-1 border-danger text-danger
+    <button class="btn-outline mr-1 border-danger text-danger
       hover:text-is-light hover:bg-danger">Danger buttons</button>
-      <button class="btn-outline mr-1 border-cnn text-white
+    <button class="btn-outline mr-1 border-cnn text-white
       hover:text-white hover:bg-cnn">CNN buttons</button>
-      <button class="btn-outline mr-1 hover:text-is-dark hover:bg-is-light">Default buttons</button>
-    </div>
+    <button class="btn-outline mr-1 hover:text-is-dark hover:bg-is-light">Default buttons</button>
 
     <hr class="mt-4 mb-4">
 
@@ -103,36 +99,26 @@
     <hr class="mt-4 mb-4">
 
     <h2 class="mb-2">Grid System</h2>
-    <div class="row gap-2 justify-center">
-      <div class="col-16-sm col-5-md col-3-xll">
-        <div class="card">
-          <h3 class="card-title">Hello world</h3>
-          <p class="card-body">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-3">
+      <div class="card">
+        <h3 class="card-title">Hello world</h3>
+        <p class="card-body">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
       </div>
-      <div class="col-16-sm col-5-md col-3-xll">
-        <div class="card">
-          <h3 class="card-title">Hello world</h3>
-          <p class="card-body">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        </div>
+      <div class="card">
+        <h3 class="card-title">Hello world</h3>
+        <p class="card-body">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
       </div>
-      <div class="col-16-sm col-5-md col-3-xll">
-        <div class="card">
-          <h3 class="card-title">Hello world</h3>
-          <p class="card-body">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        </div>
+      <div class="card">
+        <h3 class="card-title">Hello world</h3>
+        <p class="card-body">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
       </div>
-      <div class="col-16-sm col-5-md col-3-xll">
-        <div class="card">
-          <h3 class="card-title">Hello world</h3>
-          <p class="card-body">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        </div>
+      <div class="card">
+        <h3 class="card-title">Hello world</h3>
+        <p class="card-body">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
       </div>
-      <div class="col-16-sm col-5-md col-3-xll">
-        <div class="card">
-          <h3 class="card-title">Hello world</h3>
-          <p class="card-body">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        </div>
+      <div class="card">
+        <h3 class="card-title">Hello world</h3>
+        <p class="card-body">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
       </div>
     </div>
 
