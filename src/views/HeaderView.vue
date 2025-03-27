@@ -5,7 +5,7 @@
   import { PayloadHelper } from '../helpers'
 
   const busy = ref(true)
-  const guidePositions = ref<number[]>([0,0,0])
+  const guidePositions = ref<number[]>([10,40,20])
   const showHeaderTxt = ref('0')
   const titleLinesAmt = ref(3)
 
@@ -53,7 +53,7 @@
 </script>
 
 <template>
-  <div class="Container">
+  <div class="Container pl-4">
     <div class="Row">
       <h3 style="margin:0">Header</h3>
     </div>
@@ -74,8 +74,8 @@
             @number-of-lines="onTitleLineAmtChanged"
             :max-lines="titleLinesAmt"
             :guides="[
-              { position: guidePositions[0], color: 'rgb(255, 0, 0)', alignment: 'horizontal' },
-              { position: guidePositions[1] }
+              { position: 25, color: 'rgb(0, 190, 0)', alignment: 'horizontal' },
+              { position: 73, color: '#FF00FF84' }
             ]"
         />
       </div>

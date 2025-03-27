@@ -1,0 +1,17 @@
+@theme {
+  --color-cnn: #cc0000;
+  --color-is-light-m: hsl(0, 16%, 96%);
+  --color-is-dark-m: hsl(202, 16%, 16%);
+  --color-is-light: white;
+  --color-is-gray: #404040;
+  --color-is-dark: #353535;
+  --color-primary: #2dd5f3;
+  --color-secondary: #fcda1c;
+  --color-tertiary: #b1b8b9;
+  --color-success: #27a745;
+  --color-info: #16a2b8;
+  --color-warning: #ffc106;
+  --color-danger: #dc3544; 
+
+  --spacing: 0.75rem;
+}

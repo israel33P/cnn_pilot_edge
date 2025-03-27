@@ -47,20 +47,48 @@
 
     <h2 class="mb-2">Buttons</h2>
     <div class="row">
-      <button class="btn-primary mr-1">Primary button</button>
-      <button class="btn-outline-primary mr-1">Primary buttons</button>
+      <button class="bg-primary mr-1">Primary button</button>
+      <button class="bg-secondary mr-1">Secondary button</button>
+      <button class="bg-tertiary mr-1">Tertiary button</button>
+      <button class="bg-success mr-1">Success button</button>
+      <button class="bg-info mr-1 text-is-light">Info button</button>
+      <button class="bg-warning mr-1">Warning button</button>
+      <button class="bg-danger mr-1 text-is-light">Danger button</button>
+      <button class="bg-cnn mr-1 text-white">CNN button</button>
       <button class="btn mr-1">Default button</button>
-      <button class="btn-outline mr-1">Default buttons</button>
-      <button class="btn-outline-danger">Default buttons</button>
+    </div>
+    <h4 class="my-2">Outlined buttons</h4>
+    <div class="row">
+      <button class="btn-outline mr-1 border-primary text-primary
+      hover:text-is-dark hover:bg-primary">Primary buttons</button>
+      <button class="btn-outline mr-1 border-secondary text-secondary
+      hover:text-is-dark hover:bg-secondary">Secondary buttons</button>
+      <button class="btn-outline mr-1 border-tertiary text-tertiary
+      hover:text-is-dark hover:bg-tertiary">Tertiarty buttons</button>
+      <button class="btn-outline mr-1 border-success text-success
+      hover:text-is-dark hover:bg-success">Success buttons</button>
+      <button class="btn-outline mr-1 border-info text-info
+      hover:text-is-light hover:bg-info">Info buttons</button>
+      <button class="btn-outline mr-1 border-warning text-warning
+      hover:text-is-dark hover:bg-warning">Warning buttons</button>
+      <button class="btn-outline mr-1 border-danger text-danger
+      hover:text-is-light hover:bg-danger">Danger buttons</button>
+      <button class="btn-outline mr-1 border-cnn text-white
+      hover:text-white hover:bg-cnn">CNN buttons</button>
+      <button class="btn-outline mr-1 hover:text-is-dark hover:bg-is-light">Default buttons</button>
     </div>
 
     <hr class="mt-4 mb-4">
 
     <h2 class="mb-2">Badges</h2>
     <div class="flex flex-row">
-      <div class="badge bg-neutral-300 text-neutral-700">Badge</div>
-      <div class="badge bg-primary text-is-dark">Prim</div>
-      <div class="badge bg-cnn">CNN</div>
+      <p>Some text
+        <span class="badge bg-neutral-300 text-neutral-700">Badge</span>
+         - Another line of text.
+        <span class="badge bg-primary text-is-dark">Prim</span>
+         Some more information here
+        <span class="badge bg-cnn">CNN</span>
+      </p>
     </div>
 
     <hr class="mt-4 mb-4">

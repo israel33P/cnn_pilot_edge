@@ -1,0 +1,18 @@
+@layer base {
+  html {
+    box-sizing: border-box;
+    font-size: 100%;
+  }
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+    color: inherit;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-is-dark-m);
+    color: var(--color-is-light-m);
+  }
+}

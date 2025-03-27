@@ -1,0 +1,40 @@
+@import "tailwindcss";
+@import "./themes/main-tw.css";
+@import "./global/boilerplate-tw.css";
+@import "./global/typography-tw.css";
+
+
+@layer components {
+  .flex-layout {
+    @apply w-full flex items-center place-content-between box-border
+  }
+  /* card */
+  .card {
+    @apply block p-1 border-2 border-solid border-is-light-m shadow-xl rounded-lg
+  }
+  .card .card-title {
+    @apply text-2xl pb-0.5 font-bold
+  }
+  .card .card-body {
+    @apply text-base
+  }
+  .card .card-body a {
+    @apply underline
+  }
+  /* badge */
+  .badge {
+    @apply rounded-4xl py-0.5 px-1 text-xs font-semibold
+  }
+  /* button */
+  button {
+    @apply cursor-pointer font-bold inline-block 
+    border-0 py-0.5 px-1 rounded-md 
+    bg-is-light text-is-dark shadow-gray-900 shadow-md
+    hover:brightness-110
+  }
+  button.btn-outline {
+    @apply bg-inherit text-is-light
+    border-2 border-solid border-is-light
+    hover:brightness-100
+  }
+}
