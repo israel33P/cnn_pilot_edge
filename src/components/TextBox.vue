@@ -133,7 +133,7 @@
 
     const textLen = computed(() => textVal.value?.length || 0)
     const mainGuides = computed(() => props.guides.map((val)=>{
-        if(!val.color) val.color = '#FFFFFF'
+        if(!val.color) val.color = '#FFFFFF88'
         if(!val.alignment) val.alignment = 'vertical'
         let lineStyle: string = 'border-left: 2px solid '+val.color+';'+
                 'margin-left: -1px;' +

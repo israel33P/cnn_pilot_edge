@@ -57,13 +57,28 @@
   <NavBar v-if="queryDev" title="HEADER"></NavBar>
   <div class="context-under-nav">
     <h4 class="mb-0.5">Header</h4>
-    <div class="">
-      <input type="radio" id="rb_Off" value="0" v-model="showHeaderTxt">
-      <label for="rb_Off">OFF</label>
-      <input type="radio" id="rb_On" value="1" v-model="showHeaderTxt">
-      <label for="rb_On">ON</label>
-      <input type="radio" id="rb_OnWSubs" value="2" v-model="showHeaderTxt">
-      <label for="rb_OnWSubs">W/ SUBTITLES</label>
+    <div class="flex gap-1.5">
+      <label class="cursor-pointer flex gap-0.5 items-center" for="rb_Off">
+        <input class="hidden peer" type="radio" id="rb_Off" value="0" v-model="showHeaderTxt">
+        <span class="inline-block size-1.5 rounded-full
+            text-white border-viz-blue bg-zinc-800 ring-1 ring-zinc-600
+            peer-checked:border-3 peer-checked:bg-gray-100 peer-focus:ring-viz-blue" />
+        OFF
+      </label>
+      <label class="cursor-pointer flex gap-0.5 items-center" for="rb_On">
+        <input class="hidden peer" type="radio" id="rb_On" value="1" v-model="showHeaderTxt">
+        <span class="inline-block size-1.5 rounded-full
+            text-white border-viz-blue bg-zinc-800 ring-1 ring-zinc-600
+            peer-checked:border-3 peer-checked:bg-gray-100 peer-focus:ring-viz-blue" />
+        ON
+      </label>
+      <label class="cursor-pointer flex gap-0.5 items-center" for="rb_OnWSubs">
+        <input class="hidden peer" type="radio" id="rb_OnWSubs" value="2" v-model="showHeaderTxt">
+        <span class="inline-block size-1.5 rounded-full
+            text-white border-viz-blue bg-zinc-800 ring-1 ring-zinc-600
+            peer-checked:border-3 peer-checked:bg-gray-100 peer-focus:ring-viz-blue" />
+        W/ SUBTITLES
+      </label>
     </div>
     <div v-if="showHeader">
       <TextBox field="Title" v-if="!busy || queryDev"
@@ -74,7 +89,7 @@
           :max-lines="titleLinesAmt"
           :guides="[
             { position: guidePositions[0], color: 'rgb(0, 190, 0)', alignment: 'horizontal' },
-            { position: guidePositions[1], color: '#FF00FF84' }
+            { position: guidePositions[1] }
           ]"
       />
       <div v-if="showHeaderTxt === '2'">
@@ -82,15 +97,20 @@
             class="my-1 w-full"
             placeholder="SUBTITLE"
             :guides="[
-              {position: guidePositions[2], color:'#FFFFFF88'}
+              {position: guidePositions[2]}
             ]"
         />
       </div>
     </div>
-    <div class="Row Controls" v-if="queryDev" v-for="n in 3" :key="n">
-      <label>Controls guide #: {{ n }}</label>
-      <input type="number" min="0" max="700" step="1" :value="guidePositions[n-1]"
-          @input="(e:Event)=>{onGuideControlChanged((e.target as HTMLInputElement).value, n-1)}">
+    <div v-if="queryDev">
+      <hr class="mt-5 mb-1">
+      <div class="grid grid-cols-5 gap-2">
+        <div class="card flex flex-col" v-for="n in 3" :key="n">
+          <label class="card-title mb-1">Guide Controls: #{{ n }}</label>
+          <input class="card-body px-1 mx-0.5 w-auto border-1 rounded-md border-white" type="number" min="0" max="700" step="1" :value="guidePositions[n-1]"
+              @input="(e:Event)=>{onGuideControlChanged((e.target as HTMLInputElement).value, n-1)}">
+        </div>
+      </div>
     </div>
   </div>
 </template>
