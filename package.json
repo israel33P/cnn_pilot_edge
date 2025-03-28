@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port 2235",
+    "dev": "vite --port 2235 --host",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
   },

@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import TextBox from '../components/TextBox.vue'
+  import RadioButtons from '../components/RadioButtons.vue'
   import NavBar from '../components/NavBar.vue'
   import { onMounted, ref, computed } from 'vue'
   import { useRoute } from 'vue-router'
@@ -25,6 +26,11 @@
   const onTitleLineAmtChanged = (num: Number) => {
     console.log(num.toString())
     console.log("Testing")
+  }
+
+  const onHeaderRadioChange = (val: string) => {
+    console.log(val)
+    showHeaderTxt.value = val
   }
 
   const queryDev = computed(() => route.query.dev?.toString().toLowerCase() === 'true')
@@ -57,29 +63,16 @@
   <NavBar v-if="queryDev" title="HEADER"></NavBar>
   <div class="context-under-nav">
     <h4 class="mb-0.5">Header</h4>
-    <div class="flex gap-1.5">
-      <label class="cursor-pointer flex gap-0.5 items-center" for="rb_Off">
-        <input class="hidden peer" type="radio" id="rb_Off" value="0" v-model="showHeaderTxt">
-        <span class="inline-block size-1.5 rounded-full
-            text-white border-viz-blue bg-zinc-800 ring-1 ring-zinc-600
-            peer-checked:border-3 peer-checked:bg-gray-100 peer-focus:ring-viz-blue" />
-        OFF
-      </label>
-      <label class="cursor-pointer flex gap-0.5 items-center" for="rb_On">
-        <input class="hidden peer" type="radio" id="rb_On" value="1" v-model="showHeaderTxt">
-        <span class="inline-block size-1.5 rounded-full
-            text-white border-viz-blue bg-zinc-800 ring-1 ring-zinc-600
-            peer-checked:border-3 peer-checked:bg-gray-100 peer-focus:ring-viz-blue" />
-        ON
-      </label>
-      <label class="cursor-pointer flex gap-0.5 items-center" for="rb_OnWSubs">
-        <input class="hidden peer" type="radio" id="rb_OnWSubs" value="2" v-model="showHeaderTxt">
-        <span class="inline-block size-1.5 rounded-full
-            text-white border-viz-blue bg-zinc-800 ring-1 ring-zinc-600
-            peer-checked:border-3 peer-checked:bg-gray-100 peer-focus:ring-viz-blue" />
-        W/ SUBTITLES
-      </label>
-    </div>
+    <RadioButtons v-if="!busy || queryDev"
+          field="Omo"
+          @rb-selected="onHeaderRadioChange"
+          :value="showHeaderTxt"
+          :radio-buttons="[
+            {label: 'OFF', value: '0'},
+            {label: 'ON', value: '1', color: 'border-red-700'},
+            {label: 'W/SUBTITLES', value: '2'}
+          ]"
+     />
     <div v-if="showHeader">
       <TextBox field="Title" v-if="!busy || queryDev"
           class="my-1 w-full"
