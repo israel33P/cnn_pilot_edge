@@ -6,35 +6,41 @@
 
 @layer components {
   .flex-layout {
-    @apply w-full flex items-center place-content-between box-border
+    @apply w-full flex items-center
+        place-content-between box-border;
+  }
+  .context-under-nav {
+    @apply w-full max-w-[1600px] mb-0 mt-2
+        mx-auto pb-0 pt-[55px] px-[20px] box-border;
   }
   /* card */
   .card {
-    @apply block p-1 border-2 border-solid border-is-light-m shadow-xl rounded-lg
+    @apply block p-1 border-2 border-solid
+      border-is-light-m shadow-xl rounded-lg;
   }
   .card .card-title {
-    @apply text-2xl pb-0.5 font-bold
+    @apply text-2xl pb-0.5 font-bold;
   }
   .card .card-body {
-    @apply text-base
+    @apply text-base;
   }
   .card .card-body a {
-    @apply underline
+    @apply underline;
   }
   /* badge */
   .badge {
-    @apply rounded-4xl py-0.5 px-1 text-xs font-semibold
+    @apply rounded-4xl py-0.5 px-1 text-xs font-semibold;
   }
   /* button */
   button {
     @apply cursor-pointer font-bold inline-block 
     border-0 py-0.5 px-1 rounded-md 
     bg-is-light text-is-dark shadow-gray-900 shadow-md
-    hover:brightness-110
+    hover:brightness-110;
   }
   button.btn-outline {
     @apply bg-inherit text-is-light
     border-2 border-solid border-is-light
-    hover:brightness-100
+    hover:brightness-100;
   }
 }

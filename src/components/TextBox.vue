@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import { computed, onMounted, onUnmounted, ref, watch, nextTick, type PropType } from 'vue'
     import { PayloadHelper } from '../helpers'
-    import type { CapsType, PositionOptions, GuideLine } from '../types'
+    import type { CapsType, GuideLine } from '../types'
 
     const props = defineProps({
         field: {
@@ -12,15 +12,14 @@
             type: String,
             required: false,
         },
+        placeholder: {
+            type: String,
+            required: false,
+        },
         maxLines: {
             type: Number,
             required: false,
             default: 1,
-        },
-        labelPosition: {
-           type: String as PropType<PositionOptions>,
-            required: false,
-            default: 'left',
         },
         guides: {
             type: Array as PropType<GuideLine[]>,
@@ -29,7 +28,6 @@
         },
         heightByLines: Number,
         capitalize: String as PropType<CapsType>,
-        label: String,
     })
     
     const emit = defineEmits<{
@@ -134,21 +132,19 @@
     }
 
     const textLen = computed(() => textVal.value?.length || 0)
-    const TextBoxVal = computed(() => 'TextBox ' + props.labelPosition)
-    const isTopOrLeft = computed(() => props.labelPosition.startsWith('t') || props.labelPosition.startsWith('l'))
     const mainGuides = computed(() => props.guides.map((val)=>{
         if(!val.color) val.color = '#FFFFFF'
         if(!val.alignment) val.alignment = 'vertical'
         let lineStyle: string = 'border-left: 2px solid '+val.color+';'+
                 'margin-left: -1px;' +
-                'top: 0;' +
-                'bottom: 0;' +
+                'top: 2px;' +
+                'bottom: 2px;' +
                 'left:' + val.position +'px;'
         if(val.alignment === 'horizontal'){
             lineStyle = 'border-top: 2px solid '+val.color+';'+
                 'margin-top: -1px;' +
-                'left: 0;' +
-                'right: 0;' +
+                'left: 2px;' +
+                'right: 2px;' +
                 'top:' + val.position +'px;'
         }
         const output = {
@@ -170,10 +166,11 @@
 
 <template>
     <div class="m-0 p-0">
-        <!--<p v-if="props.label && isTopOrLeft">{{ props.label }}</p>-->
         <div class="relative flex" v-if="maxLines < 2">
-            <input class="relative w-full box-border border-is-light border-solid border-2 rounded-md"
+            <input class="relative w-full box-border border-is-light
+                    border-solid border-2 rounded-md px-1"
                 type="text"
+                :placeholder="props.placeholder ? props.placeholder : ''"
                 :value="props.value ? props.value : textVal"
                 @keydown="keydown"
                 @input="(e: Event)=>{onValueChanged((e.target as HTMLInputElement).value, e)}"
@@ -183,21 +180,18 @@
             </div>
         </div>
         <div class="relative flex" v-if="maxLines >= 2">
-            <textarea class="relative w-full box-border resize-none border-is-light border-solid border-2 rounded-md"
-                   @input="(e:Event)=>{onValueChanged((e.target as HTMLInputElement).value, e)}"
-                   @keydown="keydown" 
-                   wrap="off"
-                   :value="props.value ? props.value : textVal"
-                   :rows="props.heightByLines ? props.heightByLines : props.maxLines"
+            <textarea class="relative w-full box-border resize-none border-is-light
+                        border-solid border-2 rounded-md px-1"
+                    @input="(e:Event)=>{onValueChanged((e.target as HTMLInputElement).value, e)}"
+                    @keydown="keydown" 
+                    wrap="off"
+                    :placeholder="props.placeholder ? props.placeholder : ''"
+                    :value="props.value ? props.value : textVal"
+                    :rows="props.heightByLines ? props.heightByLines : props.maxLines"
             ></textarea>
             <div class="GuideGrp" v-for="(val, idx) in mainGuides" :key="idx">
                 <div :style="val.style" />
             </div>
         </div>
-        <!--<p v-if="props.label && !isTopOrLeft">{{ props.label }}</p>-->
     </div>
 </template>
-
-<style lang="css" scoped>
-    @import '../assets/styles/Textbox.css'
-</style>

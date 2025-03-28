@@ -1,11 +1,12 @@
 <script setup lang="ts">
   import TextBox from '../components/TextBox.vue'
+  import NavBar from '../components/NavBar.vue'
   import { onMounted, ref, computed } from 'vue'
   import { useRoute } from 'vue-router'
   import { PayloadHelper } from '../helpers'
 
   const busy = ref(true)
-  const guidePositions = ref<number[]>([10,40,20])
+  const guidePositions = ref<number[]>([25,150,120])
   const showHeaderTxt = ref('0')
   const titleLinesAmt = ref(3)
 
@@ -53,11 +54,10 @@
 </script>
 
 <template>
-  <div class="Container pl-4">
-    <div class="Row">
-      <h3 style="margin:0">Header</h3>
-    </div>
-    <div class="Row">
+  <NavBar v-if="queryDev" title="HEADER"></NavBar>
+  <div class="context-under-nav">
+    <h4 class="mb-0.5">Header</h4>
+    <div class="">
       <input type="radio" id="rb_Off" value="0" v-model="showHeaderTxt">
       <label for="rb_Off">OFF</label>
       <input type="radio" id="rb_On" value="1" v-model="showHeaderTxt">
@@ -66,27 +66,23 @@
       <label for="rb_OnWSubs">W/ SUBTITLES</label>
     </div>
     <div v-if="showHeader">
-      <div class="Row">
-        <TextBox field="Title" v-if="!busy || queryDev"
-            class="my-1 w-full pr-10"
-            label-position="top"
-            label="Title" 
-            capitalize="true"
-            @number-of-lines="onTitleLineAmtChanged"
-            :max-lines="titleLinesAmt"
-            :guides="[
-              { position: guidePositions[0], color: 'rgb(0, 190, 0)', alignment: 'horizontal' },
-              { position: guidePositions[1], color: '#FF00FF84' }
-            ]"
-        />
-      </div>
-      <div class="Row" v-if="showHeaderTxt === '2'">
+      <TextBox field="Title" v-if="!busy || queryDev"
+          class="my-1 w-full"
+          capitalize="true"
+          @number-of-lines="onTitleLineAmtChanged"
+          placeholder="TITLE"
+          :max-lines="titleLinesAmt"
+          :guides="[
+            { position: guidePositions[0], color: 'rgb(0, 190, 0)', alignment: 'horizontal' },
+            { position: guidePositions[1], color: '#FF00FF84' }
+          ]"
+      />
+      <div v-if="showHeaderTxt === '2'">
         <TextBox field="Subtitle" v-if="!busy || queryDev"
-            class="my-1 w-full pr-10"
-            label="Subtitle"
-            label-position="top"
+            class="my-1 w-full"
+            placeholder="SUBTITLE"
             :guides="[
-              { position: guidePositions[2], color: '#4477DD' }
+              {position: guidePositions[2], color:'#FFFFFF88'}
             ]"
         />
       </div>

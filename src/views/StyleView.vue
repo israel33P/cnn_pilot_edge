@@ -4,7 +4,7 @@
 
 <template>
   <NavBar title="STYLE GUIDE"></NavBar>
-  <div class="w-full max-w-[1600px] mb-0 mt-2 mx-auto pb-0 pt-[55px] px-[20px] box-border">
+  <div class="context-under-nav">
     <h2 class="mb-2">Colors</h2>
     <span class="text-primary">text-primary</span> |
     <span class="text-secondary">text-secondary</span> |

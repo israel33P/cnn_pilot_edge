@@ -1,6 +1,6 @@
 @layer base {
   html {
-    box-sizing: border-box;
+    @apply box-border;
     font-size: 100%;
   }
   *,
@@ -10,8 +10,7 @@
     color: inherit;
   }
   body {
-    margin: 0;
-    padding: 0;
+    @apply m-0 p-0;
     background-color: var(--color-is-dark-m);
     color: var(--color-is-light-m);
   }
