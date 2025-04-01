@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import TextBox from '../components/TextBox.vue'
-  import RadioButtons from '../components/RadioButtons.vue'
-  import NavBar from '../components/NavBar.vue'
+  import TextBox from '@/components/TextBox.vue'
+  import RadioButtons from '@/components/RadioButtons.vue'
+  import NavBar from '@/components/NavBar.vue'
   import { onMounted, ref, computed } from 'vue'
   import { useRoute } from 'vue-router'
-  import { PayloadHelper } from '../helpers'
+  import { PayloadHelper } from '@/helpers'
 
   const busy = ref(true)
   const guidePositions = ref<number[]>([25,150,120])
@@ -64,21 +64,21 @@
   <div class="context-under-nav">
     <h4 class="mb-0.5">Header</h4>
     <RadioButtons v-if="!busy || queryDev"
-          field="Omo"
+          field="rbHeader"
           @rb-selected="onHeaderRadioChange"
-          :value="showHeaderTxt"
           :radio-buttons="[
             {label: 'OFF', value: '0'},
-            {label: 'ON', value: '1', color: 'border-red-700'},
+            {label: 'ON', value: '1', color: 'border-cnn'},
             {label: 'W/SUBTITLES', value: '2'}
           ]"
      />
     <div v-if="showHeader">
+      <p class="text-lg ml-1 mt-1 mb-0">TITLE</p>
       <TextBox field="Title" v-if="!busy || queryDev"
-          class="my-1 w-full"
+          class="mb-1 w-full"
           capitalize="true"
           @number-of-lines="onTitleLineAmtChanged"
-          placeholder="TITLE"
+          placeholder="TITLE HERE ALL UPPERCASE"
           :max-lines="titleLinesAmt"
           :guides="[
             { position: guidePositions[0], color: 'rgb(0, 190, 0)', alignment: 'horizontal' },
@@ -86,8 +86,9 @@
           ]"
       />
       <div v-if="showHeaderTxt === '2'">
+        <p class="text-lg ml-1 mt-1 mb-0">SUBTITLE</p>
         <TextBox field="Subtitle" v-if="!busy || queryDev"
-            class="my-1 w-full"
+            class="mb-1 w-full"
             placeholder="SUBTITLE"
             :guides="[
               {position: guidePositions[2]}
@@ -107,7 +108,3 @@
     </div>
   </div>
 </template>
-
-<style lang="css" scoped>
-  @import '../assets/styles/HeaderView.css'
-</style>

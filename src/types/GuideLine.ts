@@ -1,4 +1,4 @@
-import type { Color } from './Color'
+import type { Color } from '@/types/Color'
 type options = 'vertical' | 'horizontal'
 
 export type GuideLine = {

@@ -1,16 +1,20 @@
 <script setup lang="ts">
-defineProps<{ title: string }>()
+  defineProps<{
+    title: string,
+  }>()
 </script>
 
 <template>
   <nav class="flex-layout fixed top-[0] h-[55px] p-1 shadow-xl bg-cnn mb-4">
-    <a href="/">
+    <router-link to="/">
       <img class="h-[55px] w-auto" src="../assets/images/CNNDesignWhite.png" alt="cnn-logo">
-    </a>
+    </router-link>
     <div class="flex-layout my-[0] mx-auto py-[0] px-2">
       <h2 class="text-2xl text-is-light font-medium">{{ title }}</h2>
-      <ul>
-        <li class="text-is-light hover:text-yellow-200"><a href="/style-guide">Style Guide</a></li>
+      <ul class="flex flex-row gap-1">
+        <li class="text-is-light hover:text-secondary">
+          <router-link to="/style-guide">Style Guide</router-link>
+        </li>
       </ul>
     </div>
   </nav>

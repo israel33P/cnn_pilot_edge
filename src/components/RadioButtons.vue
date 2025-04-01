@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import { computed, onMounted, watch, ref, type PropType } from 'vue'
-    import { PayloadHelper } from '../helpers'
-    import type { RadioButton } from '../types'
+    import { PayloadHelper } from '@/helpers'
+    import type { RadioButton } from '@/types'
 
     const props = defineProps({
         field: {
@@ -26,10 +26,7 @@
     const selectedVal = ref('0')
 
     onMounted(() => {
-        if (!props.field) {
-            if (props.value) setNewValue(props.value) 
-            return
-        }
+        if (!props.field) return
         PayloadHelper.addFieldValueCallbacks({ [props.field]: onFieldChanged })
         onFieldChanged()
     })
@@ -54,10 +51,14 @@
 
     const mainRBtns = computed(() => props.radioButtons.map((val)=>{
         setNewValue(selectedVal.value)
+        let active:boolean = false
+        if(val.color){
+            active = true
+        }
         const output = {
             label: val.label,
             value: val.value,
-            isActive: !!val.color,
+            isActive: active,
             sClass: val.color
         }
         return output
