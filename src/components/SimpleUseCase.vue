@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { onMounted, onUnmounted, ref } from 'vue'
-    import { PayloadHelper } from '../helpers'
+    import { PayloadHelper } from '../helpers/PayloadHelper'
 
     const textVal = ref('')
 

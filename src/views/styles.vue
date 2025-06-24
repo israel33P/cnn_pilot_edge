@@ -1,5 +1,14 @@
+<script lang="ts">
+  export const metadata: ITemplate = {
+    name: 'styles',
+    description: 'This is the Tailwinds style guide.',
+    author: 'Israel Sanchez',
+    updated: '06/24/2025',
+  };
+</script>
 <script setup lang="ts">
-    import NavBar from '@/components/NavBar.vue'
+  import type { ITemplate  } from '@/models';
+  import NavBar from '@/components/NavBar.vue'
 </script>
 
 <template>

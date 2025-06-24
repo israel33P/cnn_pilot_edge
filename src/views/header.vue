@@ -1,10 +1,20 @@
+<script lang="ts">
+  export const metadata: ITemplate = {
+    name: 'header',
+    description: 'This is the Header template',
+    concept: 'Z Startup',
+    author: 'Israel Sanchez',
+    updated: '06/24/2025',
+  };
+</script>
 <script setup lang="ts">
+  import type { ITemplate  } from '@/models';
   import TextBox from '@/components/TextBox.vue'
   import RadioButtons from '@/components/RadioButtons.vue'
   import NavBar from '@/components/NavBar.vue'
   import { onMounted, ref, computed } from 'vue'
   import { useRoute } from 'vue-router'
-  import { PayloadHelper } from '@/helpers'
+  import { PayloadHelper } from '@/helpers/PayloadHelper'
 
   const busy = ref(true)
   const guidePositions = ref<number[]>([25,150,120])

@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { computed, onMounted, onUnmounted, ref, watch, nextTick, type PropType } from 'vue'
-    import { PayloadHelper } from '@/helpers'
+    import { PayloadHelper } from '@/helpers/PayloadHelper'
     import type { CapsType, GuideLine } from '@/types'
 
     const props = defineProps({

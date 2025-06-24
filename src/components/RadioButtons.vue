@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { computed, onMounted, watch, ref, type PropType } from 'vue'
-    import { PayloadHelper } from '@/helpers'
+    import { PayloadHelper } from '@/helpers/PayloadHelper'
     import type { RadioButton } from '@/types'
 
     const props = defineProps({
