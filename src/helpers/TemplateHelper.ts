@@ -3,7 +3,7 @@ import type { ITemplate, ITemplateGroup } from '@/models';
 export default class TemplateHelper {
   public static getTemplateFromRoute(): ITemplate | null {
     const queryParams = new URLSearchParams(window.location.search);
-    const route = queryParams.get('route')?.toLowerCase();
+    const route = queryParams.get('template')?.toLowerCase();
 
     let template: ITemplate | null = null;
     TemplateHelper.get().forEach((group) => {

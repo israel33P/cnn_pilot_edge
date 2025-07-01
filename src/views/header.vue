@@ -11,14 +11,13 @@
   import type { ITemplate  } from '@/models';
   import TextBox from '@/components/TextBox.vue'
   import RadioButtons from '@/components/RadioButtons.vue'
-  import NavBar from '@/components/NavBar.vue'
   import { onMounted, ref, computed } from 'vue'
   import { useRoute } from 'vue-router'
   import { PayloadHelper } from '@/helpers/PayloadHelper'
 
   const busy = ref(true)
   const guidePositions = ref<number[]>([25,150,120])
-  const showHeaderTxt = ref('0')
+  const showHeaderTxt = ref('3')
   const titleLinesAmt = ref(3)
 
   const route = useRoute()
@@ -70,8 +69,7 @@
 </script>
 
 <template>
-  <NavBar v-if="queryDev" title="HEADER"></NavBar>
-  <div class="context-under-nav">
+  <div>
     <h4 class="mb-0.5">Header</h4>
     <RadioButtons v-if="!busy || queryDev"
           field="rbHeader"
@@ -108,7 +106,7 @@
     </div>
     <div v-if="queryDev">
       <hr class="mt-5 mb-1">
-      <div class="grid grid-cols-5 gap-2">
+      <div class="grid grid-cols-5 gap-2 pb-[255px]">
         <div class="card flex flex-col" v-for="n in 3" :key="n">
           <label class="card-title mb-1">Guide Controls: #{{ n }}</label>
           <input class="card-body px-1 mx-0.5 w-auto border-1 rounded-md border-white" type="number" min="0" max="700" step="1" :value="guidePositions[n-1]"

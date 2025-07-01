@@ -2,7 +2,6 @@
   import { onMounted, ref, watch } from 'vue';
   import { useRouter } from 'vue-router';
 
-  import { PayloadHelper } from './helpers/PayloadHelper';
   import TemplateHelper from './helpers/TemplateHelper';
   import tempList from './helpers/TemplateList';
   import type { ITemplate, ITemplateGroup } from './models';

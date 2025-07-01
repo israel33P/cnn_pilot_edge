@@ -29,6 +29,8 @@
         if (!props.field) return
         PayloadHelper.addFieldValueCallbacks({ [props.field]: onFieldChanged })
         onFieldChanged()
+        const fieldVal = PayloadHelper.getFieldText(props.field)
+        console.log(`Inside OnMount ${fieldVal}`)
     })
 
     const onFieldChanged = () => {
