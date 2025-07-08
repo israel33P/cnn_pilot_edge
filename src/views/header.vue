@@ -17,13 +17,16 @@
 
   const busy = ref(true)
   const guidePositions = ref<number[]>([25,150,120])
-  const showHeaderTxt = ref('3')
+  const showHeaderTxt = ref('2')
   const titleLinesAmt = ref(3)
 
   const route = useRoute()
 
   onMounted(async () => {
     PayloadHelper.initialise().then(() => (busy.value = false))
+    if (!busy.value) {
+      showHeaderTxt.value = PayloadHelper.getFieldText('rbHeader');
+    }
   })
 
   const onGuideControlChanged = async (val: string, idx: number) => {
@@ -38,28 +41,27 @@
   }
 
   const onHeaderRadioChange = (val: string) => {
-    console.log(val)
     showHeaderTxt.value = val
   }
 
   const queryDev = computed(() => route.query.dev?.toString().toLowerCase() === 'true')
   const showHeader = computed(() => {
     let isHeader: boolean = showHeaderTxt.value !== '0'
-    if (isHeader) {
+    if (isHeader && !busy.value) {
       PayloadHelper.setFieldText('-vizlayer-FG2', 'fg2_title_sub')
       PayloadHelper.setFieldText('bg2_FrameOmo', '1')
       PayloadHelper.setFieldText('fg2_TitleOmo', '0')
-    } else {
+    } else if (!busy.value) {
       PayloadHelper.setFieldText('-vizlayer-FG2', 'fg2_out')
       PayloadHelper.setFieldText('bg2_FrameOmo', '0')
       PayloadHelper.setFieldText('fg2_TitleOmo', '2')
     }
 
-    if (showHeaderTxt.value === '2') {
+    if (showHeaderTxt.value === '2' && !busy.value) {
       PayloadHelper.setFieldText('bg2_SubOmo', '1')
       PayloadHelper.setFieldText('fg2_TitleOmo', '1')
       titleLinesAmt.value = 2
-    } else {
+    } else if (!busy.value) {
       PayloadHelper.setFieldText('bg2_SubOmo', '0')
       titleLinesAmt.value = 3
     }

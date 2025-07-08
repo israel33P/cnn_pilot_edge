@@ -24,13 +24,16 @@
     }>()
     
     const selectedVal = ref('0')
+    const isLoaded = ref(false)
 
     onMounted(() => {
         if (!props.field) return
         PayloadHelper.addFieldValueCallbacks({ [props.field]: onFieldChanged })
         onFieldChanged()
+        isLoaded.value = true
+
         const fieldVal = PayloadHelper.getFieldText(props.field)
-        console.log(`Inside OnMount ${fieldVal}`)
+        selectedVal.value = fieldVal
     })
 
     const onFieldChanged = () => {
@@ -40,9 +43,11 @@
     }
 
     const setNewValue = (newVal: string): void => {
+        if (!isLoaded.value) return
         if (newVal !== selectedVal.value) {
             selectedVal.value = newVal
         }
+
 
         if (props.field) {
             if (newVal !== PayloadHelper.getFieldText(props.field)){
