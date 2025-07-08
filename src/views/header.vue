@@ -17,8 +17,8 @@
 
   const busy = ref(true)
   const guidePositions = ref<number[]>([25,150,120])
-  const showHeaderTxt = ref('2')
-  const titleLinesAmt = ref(3)
+  const showHeaderTxt = ref('0')
+  const titleLinesAmt = ref(0)
 
   const route = useRoute()
 
