@@ -26,6 +26,7 @@
     PayloadHelper.initialise().then(() => (busy.value = false))
     if (!busy.value) {
       showHeaderTxt.value = PayloadHelper.getFieldText('rbHeader');
+      showHeader;
     }
   })
 
