@@ -8,11 +8,12 @@
     };
 </script>
 <script setup lang="ts">
-    import type { ITemplate, IFile } from '@/models';
+    import type { ITemplate, IImageFile } from '@/models';
     import { ref } from 'vue';
+    import axios from 'axios';
 
     const ddAreaStyleDefault: string = 'bg-inherit'
-    const selectedImages = ref<[IFile] | null>(null);
+    const selectedImages = ref<[IImageFile] | null>(null);
     const imageInput = ref<HTMLInputElement | null>(null);
     const isDragging = ref(false);
     const ddAreaStyle = ref(ddAreaStyleDefault);
@@ -27,9 +28,9 @@
     }
     const ingestImage = () => {
         if(selectedImages.value){
-            console.log('uploaded');
+            postImagesToGH();
         }else {
-            console.log('not uploaded');
+            console.log('No Images to upload');
         }
     }
     const deleteImage = (index: number) => {
@@ -57,17 +58,58 @@
         AddImagesToSelecedImages(images);
     }
     
-    function AddImagesToSelecedImages(images: FileList | null){
+    async function AddImagesToSelecedImages(images: FileList | null){
         if(!images || images.length === 0) return;
         for(let i=0; i<images.length; i++){
             if(images[i].type.split('/')[0] != 'image') continue;
             if(!selectedImages.value){
-                selectedImages.value = [{name: images[i].name, url:URL.createObjectURL(images[i])}];
-            } else if(!selectedImages.value?.some((e: IFile) => e.name === images[i].name)){
-                selectedImages.value?.push({name: images[i].name, url:URL.createObjectURL(images[i])});
+                selectedImages.value = [{
+                    name: images[i].name.split('.')[0],
+                    type: images[i].type,
+                    url:URL.createObjectURL(images[i]),
+                    ab: await images[i].arrayBuffer(),
+                }];
+            } else if(!selectedImages.value?.some((e: IImageFile) => e.name === images[i].name)){
+                selectedImages.value?.push({
+                    name: images[i].name.split('.')[0],
+                    type: images[i].type,
+                    url:URL.createObjectURL(images[i]),
+                    ab: await images[i].arrayBuffer(),
+                });
             }
         }
-        console.log(selectedImages.value);
+    }
+
+    async function postImagesToGH() {
+        try {
+            if(!selectedImages.value) return 
+            for(let i = selectedImages.value.length -1; i >= 0; i--) {
+                const temp_image = selectedImages.value[i];
+                if (temp_image.ab){
+                    const byteArray : Uint8Array = new Uint8Array(temp_image.ab)
+                    await axios.post('http://viz-util3-mse.tbsbest.com:19398/folder/8C2A5AD2-878E-0546-8CE2B27D3E31835A/',
+                        byteArray,
+                        {
+                            headers: {
+                                'Authorization': 'Basic QWRtaW46Vml6RGI=',
+                                'Content-Type': temp_image.type,
+                                'Slug': temp_image.name,
+                            },
+                            auth : {
+                                username: 'isrsanchez',
+                                password: '',
+                            },
+                        },
+                    ).then((res)=> {
+                        deleteImage(i);
+                        console.log('Uploaded:', res);
+                    });
+                }
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 </script>
 
