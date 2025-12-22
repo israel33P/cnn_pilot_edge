@@ -13,7 +13,7 @@
     const name = ref('');
     const description = ref('');
     const updated = ref('');
-    const navLinks = ref([] as string[]);
+    //const navLinks = ref([] as string[]);
 
     const handleUrlChange = (to: any) => {
         route.value = to.query.route?.toLowerCase();
