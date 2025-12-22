@@ -9,7 +9,8 @@
 </script>
 <script setup lang="ts">
     import type { ITemplate, IImageFile } from '@/models';
-    import { ref } from 'vue';
+    import { ref, computed } from 'vue';
+    import { useRoute } from 'vue-router'
     import axios from 'axios';
 
     const ddAreaStyleDefault: string = 'bg-inherit'
@@ -17,6 +18,7 @@
     const imageInput = ref<HTMLInputElement | null>(null);
     const isDragging = ref(false);
     const ddAreaStyle = ref(ddAreaStyleDefault);
+    const route = useRoute()
 
     const onImageSelected = (event: Event) => {
         const target = event.target as HTMLInputElement;
@@ -91,13 +93,13 @@
                         byteArray,
                         {
                             headers: {
-                                'Authorization': 'Basic QWRtaW46Vml6RGI=',
+                                'Authorization': import.meta.env.VITE_VIZ_AUTH,
                                 'Content-Type': temp_image.type,
                                 'Slug': temp_image.name,
                             },
                             auth : {
-                                username: 'isrsanchez',
-                                password: '',
+                                username: import.meta.env.VITE_VIZ_USER,
+                                password: import.meta.env.VITE_VIZ_PASSWORD,
                             },
                         },
                     ).then((res)=> {
@@ -111,10 +113,37 @@
             console.error('Error:', error);
         }
     }
+
+     function ghImageFolderUrl(): string {
+        let folder: string | undefined = route.query.folder?.toString();
+        if (folder?.startsWith('<')) folder = folder.slice(1,-1);
+        if (folder?.endsWith('>')) folder = folder.slice(0,-1);
+        return `${ghUrl()}/folder/${folder}`;
+    }
+    function ghUrl() {
+        let hostName: string = "http://viz-util1-mse.com";
+        let port: string = "19398";
+        let input: string | undefined = route.query.gh?.toString();
+        if (input){
+            if (input.endsWith('/')) input = input.slice(0,-1);
+            if (input.endsWith(':')) input = input.slice(0,-1);
+            if (!input.startsWith('http://') && !input.startsWith('https://')){
+                input = `http://${input}`;
+                hostName = input;
+            }
+            if (!input.includes(':')){
+                hostName = input.split(':')[0];
+                port = input.split(':')[1];
+            }
+        }
+        return `${hostName}:${port}/`;
+    };
+    const test = computed(() => ghImageFolderUrl());
 </script>
 
 <template>
     <div class="mt-[-50px]">
+        <p>{{ test }}</p>
         <input
         class="hidden"
         type="file" 
