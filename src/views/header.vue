@@ -109,10 +109,10 @@
     </div>
     <div v-if="queryDev">
       <hr class="mt-5 mb-1">
-      <div class="grid grid-cols-5 gap-2 pb-[255px]">
+      <div class="grid grid-cols-5 gap-2 pb-21.25">
         <div class="card flex flex-col" v-for="n in 3" :key="n">
           <label class="card-title mb-1">Guide Controls: #{{ n }}</label>
-          <input class="card-body px-1 mx-0.5 w-auto border-1 rounded-md border-white" type="number" min="0" max="700" step="1" :value="guidePositions[n-1]"
+          <input class="card-body px-1 mx-0.5 w-auto border rounded-md border-white" type="number" min="0" max="700" step="1" :value="guidePositions[n-1]"
               @input="(e:Event)=>{onGuideControlChanged((e.target as HTMLInputElement).value, n-1)}">
         </div>
       </div>

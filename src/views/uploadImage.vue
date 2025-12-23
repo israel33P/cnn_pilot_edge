@@ -114,7 +114,7 @@
         }
     }
 
-     function ghImageFolderUrl(): string {
+    function ghImageFolderUrl(): string {
         let folder: string | undefined = route.query.folder?.toString();
         if (folder?.startsWith('<')) folder = folder.slice(1,-1);
         if (folder?.endsWith('>')) folder = folder.slice(0,-1);
