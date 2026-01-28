@@ -48,7 +48,7 @@
   const queryDev = computed(() => route.query.dev?.toString().toLowerCase() === 'true')
   const showHeader = computed(() => {
     let isHeader: boolean = showHeaderTxt.value !== '0'
-    if (isHeader && !busy.value) {
+    /*if (isHeader && !busy.value) {
       PayloadHelper.setFieldText('-vizlayer-FG2', 'fg2_title_sub')
       PayloadHelper.setFieldText('bg2_FrameOmo', '1')
       PayloadHelper.setFieldText('fg2_TitleOmo', '0')
@@ -56,14 +56,14 @@
       PayloadHelper.setFieldText('-vizlayer-FG2', 'fg2_out')
       PayloadHelper.setFieldText('bg2_FrameOmo', '0')
       PayloadHelper.setFieldText('fg2_TitleOmo', '2')
-    }
+    }*/
 
     if (showHeaderTxt.value === '2' && !busy.value) {
-      PayloadHelper.setFieldText('bg2_SubOmo', '1')
-      PayloadHelper.setFieldText('fg2_TitleOmo', '1')
+      //PayloadHelper.setFieldText('bg2_SubOmo', '1')
+      //PayloadHelper.setFieldText('fg2_TitleOmo', '1')
       titleLinesAmt.value = 2
     } else if (!busy.value) {
-      PayloadHelper.setFieldText('bg2_SubOmo', '0')
+      //PayloadHelper.setFieldText('bg2_SubOmo', '0')
       titleLinesAmt.value = 3
     }
 
@@ -73,9 +73,9 @@
 
 <template>
   <div>
-    <h4 class="mb-0.5">Header</h4>
+    <!--h4 class="mb-0.5">Header</h4-->
     <RadioButtons v-if="!busy || queryDev"
-          field="rbHeader"
+          field="HeaderFields/Omo"
           @rb-selected="onHeaderRadioChange"
           :radio-buttons="[
             {label: 'OFF', value: '0'},
@@ -85,7 +85,7 @@
      />
     <div v-if="showHeader">
       <p class="text-lg ml-1 mt-1 mb-0">TITLE</p>
-      <TextBox field="Title" v-if="!busy || queryDev"
+      <TextBox field="HeaderFields/Title" v-if="!busy || queryDev"
           class="mb-1 w-full"
           capitalize="true"
           @number-of-lines="onTitleLineAmtChanged"
@@ -98,7 +98,7 @@
       />
       <div v-if="showHeaderTxt === '2'">
         <p class="text-lg ml-1 mt-1 mb-0">SUBTITLE</p>
-        <TextBox field="Subtitle" v-if="!busy || queryDev"
+        <TextBox field="HeaderFields/Subtitle" v-if="!busy || queryDev"
             class="mb-1 w-full"
             placeholder="SUBTITLE"
             :guides="[
