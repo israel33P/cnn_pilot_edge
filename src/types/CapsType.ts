@@ -1,1 +1,1 @@
-export type CapsType = 'true' | 'characters' | 'words' | 'sentences' | 'none' | 'false'
+export type CapsType = 'upper' | 'lower' | 'characters' | 'words' | 'sentences' | 'none' | ''

@@ -27,6 +27,7 @@
             default: () => [],
         },
         heightByLines: Number,
+        capitalize: String as PropType<CapsType>,
     })
     
     const emit = defineEmits<{
@@ -34,7 +35,6 @@
     }>()
 
     const textVal = ref('')
-    const capitalized = ref('')
     const keydownProps: {
         cursorPosition: {
             start: number
@@ -54,8 +54,7 @@
     onMounted(() => {
         if (!props.field) return
         PayloadHelper.addFieldValueCallbacks({ [props.field]: onFieldChanged })
-        PayloadHelper.addFieldValueCallbacks({ [props.field+'/Cap']: onCapFieldChanged })
-        onCapFieldChanged()
+        onFieldChanged()
     })
 
     onUnmounted(() => {
@@ -72,12 +71,6 @@
     const onFieldChanged = () => {
         if (!props.field) return
         const fieldVal = PayloadHelper.getFieldText(props.field)
-        setNewValue(fieldVal)
-    }
-    const onCapFieldChanged = () => {
-        if (!props.field) return
-        const fieldVal = PayloadHelper.getFieldText(props.field)
-        capitalized.value = PayloadHelper.getFieldText(props.field+'/Cap').toLowerCase() || ''
         setNewValue(fieldVal)
     }
 
@@ -102,7 +95,7 @@
     }
 
     const setNewValue = (newVal: string): void => {
-        const updatedVal: string = capUpdate(newVal, capitalized.value as CapsType || '')
+        const updatedVal: string = capUpdate(newVal, props.capitalize || '')
         if (updatedVal !== textVal.value) {
             textVal.value = updatedVal
             numOfLines 
@@ -112,9 +105,6 @@
             if (updatedVal !== PayloadHelper.getFieldText(props.field)){
                 PayloadHelper.setFieldText(props.field, updatedVal)
             }
-            if (capitalized.value !== PayloadHelper.getFieldText(props.field+'/Cap').toLowerCase()){
-                PayloadHelper.setFieldText(props.field+'/Cap', capitalized.value)
-            }
         }
     }
 
@@ -123,10 +113,8 @@
         if (text) {
            switch (type) {
                 case 'upper':
+                case  'characters':
                     updatedText = text.toUpperCase()
-                    break
-                case 'lower':
-                    updatedText = text.toLowerCase()
                     break
                 case 'words':
                     updatedText = text.replace(/(^\w|\s\w)/g, (t) => t.toUpperCase())
@@ -134,6 +122,7 @@
                 case 'sentences':
                     updatedText = text.replace(/(^\w|[.]\s\w)/g, (t) => t.toUpperCase())
                     break
+                case 'lower':
                 default:
                     updatedText = text
                     break
