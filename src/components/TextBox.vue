@@ -35,6 +35,8 @@
 
     const textVal = ref('')
     const capitalized = ref('')
+    const vertLinePos = ref(0)
+    const horzLinePos = ref(0)
     const keydownProps: {
         cursorPosition: {
             start: number
@@ -55,6 +57,8 @@
         if (!props.field) return
         PayloadHelper.addFieldValueCallbacks({ [props.field]: onFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/Cap']: onCapFieldChanged })
+        PayloadHelper.addFieldValueCallbacks({ [props.field+'/VLine']: onVertLineFieldChanged })
+        PayloadHelper.addFieldValueCallbacks({ [props.field+'/HLine']: onHorzLineFieldChanged })
         onCapFieldChanged()
     })
 
@@ -79,6 +83,14 @@
         const fieldVal = PayloadHelper.getFieldText(props.field)
         capitalized.value = PayloadHelper.getFieldText(props.field+'/Cap').toLowerCase() || ''
         setNewValue(fieldVal)
+    }
+    const onVertLineFieldChanged = () => {
+        if (!props.field) return
+        vertLinePos.value = parseFloat(PayloadHelper.getFieldText(props.field+'/VLine'))
+    }
+    const onHorzLineFieldChanged = () => {
+        if (!props.field) return
+        horzLinePos.value = parseFloat(PayloadHelper.getFieldText(props.field+'/HLine'))
     }
 
     const onValueChanged = async (val: string, {target}: Event) => {
@@ -115,6 +127,8 @@
             if (capitalized.value !== PayloadHelper.getFieldText(props.field+'/Cap').toLowerCase()){
                 PayloadHelper.setFieldText(props.field+'/Cap', capitalized.value)
             }
+            vertLinePos.value = parseFloat(PayloadHelper.getFieldText(props.field+'/VLine'))
+            horzLinePos.value = parseFloat(PayloadHelper.getFieldText(props.field+'/HLine'))
         }
     }
 
@@ -143,7 +157,7 @@
     }
 
     const textLen = computed(() => textVal.value?.length || 0)
-    const mainGuides = computed(() => props.guides
+    /*const mainGuides = computed(() => props.guides
     .filter(val => val.position != 0)
     .map((val)=>{
         if(!val.color) val.color = '#FFFFFF88'
@@ -167,7 +181,30 @@
             pos: val.position
         }
         return output
-    }))
+    }))*/
+    const mainGuides = computed(() => {
+        type Styling = { style: string, align: string, pos: number}
+        const outArr: Styling[] = []
+        if (vertLinePos.value !== 0) {
+            let lineStyle: string = 'border-left: 2px solid #FFFFFF88;'+
+                'position: absolute; z-index: 2;' +
+                'margin-left: -1px;' +
+                'top: 2px;' +
+                'bottom: 2px;' +
+                'left:' + vertLinePos.value +'px;'
+            outArr.push({style:lineStyle, align:'vertical', pos:vertLinePos.value})
+        }
+        if (horzLinePos.value !== 0) {
+            let lineStyle: string = 'border-top: 2px solid #FFFFFF88;'+
+                'position: absolute; z-index: 2;' +
+                'margin-top: -1px;' +
+                'left: 2px;' +
+                'right: 2px;' +
+                'top:' + horzLinePos.value +'px;'
+            outArr.push({style:lineStyle, align:'horizontal', pos:horzLinePos.value})
+        }
+        return outArr
+    })
     const numOfLines = computed(() => (textVal.value?.match(/\n/g) || []).length + 1)
 
     watch(numOfLines, () => {

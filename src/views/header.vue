@@ -9,7 +9,7 @@
 </script>
 <script setup lang="ts">
   import type { ITemplate  } from '@/models';
-  import TextBox from '@/components/TextBox.vue'
+  import TextBox from '@/components/TextBoxOlder.vue'
   import RadioButtons from '@/components/RadioButtons.vue'
   import { onMounted, ref, computed } from 'vue'
   import { useRoute } from 'vue-router'
@@ -25,7 +25,7 @@
   onMounted(async () => {
     PayloadHelper.initialise().then(() => (busy.value = false))
     if (!busy.value) {
-      showHeaderTxt.value = PayloadHelper.getFieldText('HeaderFields/Omo')
+      showHeaderTxt.value = PayloadHelper.getFieldText('fg2_TitleOmo');
       showHeader;
     }
   })
@@ -48,9 +48,22 @@
   const queryDev = computed(() => route.query.dev?.toString().toLowerCase() === 'true')
   const showHeader = computed(() => {
     let isHeader: boolean = showHeaderTxt.value !== '0'
+    /*if (isHeader && !busy.value) {
+      PayloadHelper.setFieldText('-vizlayer-FG2', 'fg2_title_sub')
+      PayloadHelper.setFieldText('bg2_FrameOmo', '1')
+      PayloadHelper.setFieldText('fg2_TitleOmo', '0')
+    } else if (!busy.value) {
+      PayloadHelper.setFieldText('-vizlayer-FG2', 'fg2_out')
+      PayloadHelper.setFieldText('bg2_FrameOmo', '0')
+      PayloadHelper.setFieldText('fg2_TitleOmo', '2')
+    }*/
+
     if (showHeaderTxt.value === '2' && !busy.value) {
+      //PayloadHelper.setFieldText('bg2_SubOmo', '1')
+      //PayloadHelper.setFieldText('fg2_TitleOmo', '1')
       titleLinesAmt.value = 2
     } else if (!busy.value) {
+      //PayloadHelper.setFieldText('bg2_SubOmo', '0')
       titleLinesAmt.value = 3
     }
 
@@ -60,9 +73,9 @@
 
 <template>
   <div>
-    <!--h4 class="mb-0.5">Header</h4-->
+    <h4 class="mb-0.5">Header</h4>
     <RadioButtons v-if="!busy || queryDev"
-          field="HeaderFields/Omo"
+          field="fg2_TitleOmo"
           @rb-selected="onHeaderRadioChange"
           :radio-buttons="[
             {label: 'OFF', value: '0'},
@@ -72,7 +85,7 @@
      />
     <div v-if="showHeader">
       <p class="text-lg ml-1 mt-1 mb-0">TITLE</p>
-      <TextBox field="HeaderFields/Title" v-if="!busy || queryDev"
+      <TextBox field="Title" v-if="!busy || queryDev"
           class="mb-1 w-full"
           @number-of-lines="onTitleLineAmtChanged"
           placeholder="TITLE HERE ALL UPPERCASE"
@@ -84,8 +97,9 @@
       />
       <div v-if="showHeaderTxt === '2'">
         <p class="text-lg ml-1 mt-1 mb-0">SUBTITLE</p>
-        <TextBox field="HeaderFields/Subtitle" v-if="!busy || queryDev"
+        <TextBox field="Subtitle" v-if="!busy || queryDev"
             class="mb-1 w-full"
+            capitalize="true"
             placeholder="SUBTITLE"
             :guides="[
               {position: guidePositions[2]}
