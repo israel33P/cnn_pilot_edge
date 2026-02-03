@@ -26,7 +26,7 @@
     const emit = defineEmits<{
         numberOfLines: [numOfLines: number],
         errorText: [error: string],
-        titleText: [title: string]
+        labelText: [label: string]
     }>()
 
     const textVal = ref('')
@@ -37,7 +37,7 @@
     const vertLineColor = ref('#FFFFFF88')
     const horzLineColor = ref('#FFFFFF88')
     const errorTxt = ref('')
-    const titleTxt = ref('')
+    const labelTxt = ref('')
 
     const keydownProps: {
         cursorPosition: {
@@ -59,7 +59,7 @@
         if (!props.field) return
         if(props.defaultLineCount) lineCount.value = props.defaultLineCount
         PayloadHelper.addFieldValueCallbacks({ [props.field]: onFieldChanged })
-        PayloadHelper.addFieldValueCallbacks({ [props.field+'/Title']: onTitleFieldChanged })
+        PayloadHelper.addFieldValueCallbacks({ [props.field+'/Label']: onLabelFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/LineCount']: onLineCountFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/Error']: onErrorFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/Cap']: onCapFieldChanged })
@@ -96,9 +96,9 @@
         if (!props.field) return
         errorTxt.value = PayloadHelper.getFieldText(props.field+'/Error') || ''
     }
-    const onTitleFieldChanged = () => {
+    const onLabelFieldChanged = () => {
         if (!props.field) return
-        titleTxt.value = PayloadHelper.getFieldText(props.field+'/Title') || ''
+        labelTxt.value = PayloadHelper.getFieldText(props.field+'/Label') || ''
     }
     const onCapFieldChanged = () => {
         if (!props.field) return
@@ -138,7 +138,7 @@
     }
 
     const setNewValue = (newVal: string): void => {
-        onTitleFieldChanged()
+        onLabelFieldChanged()
         onLineCountFieldChanged()
         onHorzLineFieldChanged()
         onVertLineFieldChanged()
@@ -222,7 +222,7 @@
 
     const numOfLines = computed(() => (textVal.value?.match(/\n/g) || []).length + 1)
     const error = computed(() => errorTxt.value)
-    const title = computed(() => titleTxt.value)
+    const label = computed(() => labelTxt.value)
 
     watch(numOfLines, () => {
         emit('numberOfLines', numOfLines.value)
@@ -230,11 +230,11 @@
     watch(error, () => {
         emit('errorText', errorTxt.value)
     })
-    watch(title, () => {
-        emit('errorText', titleTxt.value)
+    watch(label, () => {
+        emit('labelText', labelTxt.value)
     })
 
-    defineExpose({ numOfLines, error, title })
+    defineExpose({ numOfLines, error, label })
 </script>
 
 <template>
