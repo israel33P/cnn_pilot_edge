@@ -1,10 +1,10 @@
 <script lang="ts">
   export const metadata: ITemplate = {
-    name: 'header',
-    description: 'This is the Header template',
-    concept: 'Z Startup',
+    name: 'header_generic',
+    description: 'This is the Generic Header template',
+    concept: '',
     author: 'Israel Sanchez',
-    updated: '06/24/2025',
+    updated: '02/03/2026',
   };
 </script>
 <script setup lang="ts">
@@ -14,13 +14,16 @@
   import { onMounted, ref, computed } from 'vue'
   import { useRoute } from 'vue-router'
   import { PayloadHelper } from '@/helpers/PayloadHelper'
+  import { useClipboard } from '@vueuse/core'
 
   const busy = ref(true)
-  const guidePositions = ref<number[]>([25,150,120])
   const showHeaderTxt = ref('0')
-  const titleLinesAmt = ref(0)
+  const errorTxt = ref('')
+  const tempUrl = ref('{$PDS}/app/cnn/?template=header_generic')
 
   const route = useRoute()
+
+  const { copy, isSupported } = useClipboard( )
 
   onMounted(async () => {
     PayloadHelper.initialise().then(() => (busy.value = false))
@@ -30,37 +33,19 @@
     }
   })
 
-  const onGuideControlChanged = async (val: string, idx: number) => {
-    if (val){
-      guidePositions.value[idx] = Number(val)
-    }
+  const onErrorChange = (errorText:string) => {
+    errorTxt.value = errorText
   }
-
-  const onTitleLineAmtChanged = (num: Number) => {
-    console.log(num.toString())
-    console.log("Testing")
-  }
-
   const onHeaderRadioChange = (val: string) => {
     showHeaderTxt.value = val
   }
 
   const queryDev = computed(() => route.query.dev?.toString().toLowerCase() === 'true')
-  const showHeader = computed(() => {
-    let isHeader: boolean = showHeaderTxt.value !== '0'
-    if (showHeaderTxt.value === '2' && !busy.value) {
-      titleLinesAmt.value = 2
-    } else if (!busy.value) {
-      titleLinesAmt.value = 3
-    }
-
-    return isHeader
-  })
+  const showHeader = computed(() => showHeaderTxt.value !== '0')
 </script>
 
 <template>
   <div>
-    <!--h4 class="mb-0.5">Header</h4-->
     <RadioButtons v-if="!busy || queryDev"
           field="HeaderFields/Omo"
           @rb-selected="onHeaderRadioChange"
@@ -71,35 +56,37 @@
           ]"
      />
     <div v-if="showHeader">
-      <p class="text-lg ml-1 mt-1 mb-0">TITLE</p>
+      <p class="text-lg ml-1 mt-1 mb-0 pb-0">TITLE<span class="text-red-500 text-base italic" v-if="errorTxt!=''"> | {{ errorTxt }}</span></p>
       <TextBox field="HeaderFields/Title" v-if="!busy || queryDev"
           class="mb-1 w-full"
-          @number-of-lines="onTitleLineAmtChanged"
+          @error-text="onErrorChange"
           placeholder="TITLE HERE ALL UPPERCASE"
-          :max-lines="titleLinesAmt"
-          :guides="[
-            { position: guidePositions[0], color: 'rgb(0, 190, 0)', alignment: 'horizontal' },
-            { position: guidePositions[1] }
-          ]"
+          :default-line-count="parseInt('2')"
       />
       <div v-if="showHeaderTxt === '2'">
         <p class="text-lg ml-1 mt-1 mb-0">SUBTITLE</p>
         <TextBox field="HeaderFields/Subtitle" v-if="!busy || queryDev"
             class="mb-1 w-full"
             placeholder="SUBTITLE"
-            :guides="[
-              {position: guidePositions[2]}
-            ]"
         />
       </div>
     </div>
     <div v-if="queryDev">
       <hr class="mt-5 mb-1">
-      <div class="grid grid-cols-5 gap-2 pb-21.25">
-        <div class="card flex flex-col" v-for="n in 3" :key="n">
-          <label class="card-title mb-1">Guide Controls: #{{ n }}</label>
-          <input class="card-body px-1 mx-0.5 w-auto border rounded-md border-white" type="number" min="0" max="700" step="1" :value="guidePositions[n-1]"
-              @input="(e:Event)=>{onGuideControlChanged((e.target as HTMLInputElement).value, n-1)}">
+      <div class="grid grid-cols-1 gap-2 pb-21.25">
+        <div class="card flex flex-col mt-2">
+          <label class="card-title mb-1">
+            Component URL:
+            <p @click="copy(tempUrl)" class="flex gap-1 font-medium text-is-light-m/85 text-lg mt-1 cursor-pointer" v-if="isSupported">
+              <span class="font-light">
+                <svg xmlns="http://www.w3.org/2000/svg" class=" h-2" fill="currentColor" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
+                </svg>
+              </span> 
+              {{ tempUrl }}
+            </p>
+            <p class="font-medium text-is-light-m/85 text-lg mt-1" v-else>{{ tempUrl }}</p>
+          </label>
         </div>
       </div>
     </div>
