@@ -25,6 +25,7 @@
     
     const emit = defineEmits<{
         numberOfLines: [numOfLines: number],
+        sizeControl: [sizeCtrl: number],
         errorText: [error: string],
         labelText: [label: string]
     }>()
@@ -32,6 +33,7 @@
     const textVal = ref('')
     const lineCount = ref(1)
     const capitalized = ref('')
+    const size = ref(0)
     const vertLinePos = ref(0)
     const horzLinePos = ref(0)
     const vertLineColor = ref('#FFFFFF88')
@@ -63,6 +65,8 @@
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/LineCount']: onLineCountFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/Error']: onErrorFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/Cap']: onCapFieldChanged })
+        PayloadHelper.addFieldValueCallbacks({ [props.field+'/Size']: onSizeFieldChanged })
+
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/VLine']: onVertLineFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/VLine/Color']: onVertLineFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/HLine']: onHorzLineFieldChanged })
@@ -91,6 +95,13 @@
         let tempCount: number = parseFloat(PayloadHelper.getFieldText(props.field+'/LineCount')) || lineCount.value
         if (tempCount < 1) tempCount = 1
         lineCount.value = tempCount
+    }
+    const onSizeFieldChanged = () => {
+        if (!props.field) return
+        let tempSize:number = parseFloat(PayloadHelper.getFieldText(props.field+'/Size')) || 0
+        if(tempSize < -1) tempSize = -1
+        if(tempSize > 5) tempSize = 5
+        size.value = tempSize
     }
     const onErrorFieldChanged = () => {
         if (!props.field) return
@@ -139,6 +150,7 @@
 
     const setNewValue = (newVal: string): void => {
         onLabelFieldChanged()
+        onSizeFieldChanged()
         onLineCountFieldChanged()
         onHorzLineFieldChanged()
         onVertLineFieldChanged()
@@ -195,7 +207,25 @@
     }
 
     const textLen = computed(() => textVal.value?.length || 0)
-    const borderColor = computed(() => errorTxt.value === ''? 'border-is-light': 'border-red-700 focus:outline-none focus:border-red-400')
+    const borderColor = computed(() => errorTxt.value === ''? 'border-is-light/55': 'border-red-700 focus:outline-none focus:border-red-400')
+    const sizeDisplay = computed(() => {
+        switch(size.value){
+            case -1:
+                return "border-1 text-xs"
+            case 0:
+                return "border-1 text-sm"
+            case 1:
+                return "border-2 text-base"
+            case 2:
+                return "border-3 text-lg"
+            case 3:
+                return "border-4 text-xl"
+            case 4:
+                return "border-5 text-2xl"
+            case 5:
+                return "border-6 text-3xl"
+        }
+    })
     const mainGuides = computed(() => {
         type Styling = { style: string, align: string, pos: number}
         const outArr: Styling[] = []
@@ -221,11 +251,15 @@
     })
 
     const numOfLines = computed(() => (textVal.value?.match(/\n/g) || []).length + 1)
+    const sizeCtrl = computed(() => size.value)
     const error = computed(() => errorTxt.value)
     const label = computed(() => labelTxt.value)
 
     watch(numOfLines, () => {
         emit('numberOfLines', numOfLines.value)
+    })
+    watch(sizeCtrl, () => {
+        emit('sizeControl', sizeCtrl.value)
     })
     watch(error, () => {
         emit('errorText', errorTxt.value)
@@ -234,18 +268,18 @@
         emit('labelText', labelTxt.value)
     })
 
-    defineExpose({ numOfLines, error, label })
+    defineExpose({ numOfLines, sizeCtrl, error, label })
 </script>
 
 <template>
     <div class="m-0 p-0">
         <div class="relative flex" v-if="lineCount < 2">
             <input class="relative w-full box-border
-                    border-solid border-2 rounded-md px-1"
-                type="text"
-                :class="borderColor"
+                    border-solid rounded-md px-1"
+                :class="borderColor, sizeDisplay"
                 :placeholder="props.placeholder ? props.placeholder : ''"
                 :value="props.value ? props.value : textVal"
+                type="text"
                 @keydown="keydown"
                 @input="(e: Event)=>{onValueChanged((e.target as HTMLInputElement).value, e)}"
             />
@@ -255,8 +289,8 @@
         </div>
         <div class="relative flex" v-else>
             <textarea class="relative w-full box-border resize-none
-                        border-solid border-2 rounded-md px-1"
-                    :class="borderColor"
+                        border-solid rounded-md px-1"
+                    :class="borderColor, sizeDisplay"
                     @input="(e:Event)=>{onValueChanged((e.target as HTMLInputElement).value, e)}"
                     @keydown="keydown" 
                     wrap="off"
