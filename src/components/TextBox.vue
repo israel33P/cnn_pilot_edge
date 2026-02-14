@@ -95,6 +95,7 @@
         let tempCount: number = parseFloat(PayloadHelper.getFieldText(props.field+'/LineCount')) || lineCount.value
         if (tempCount < 1) tempCount = 1
         lineCount.value = tempCount
+        onFieldChanged()
     }
     const onSizeFieldChanged = () => {
         if (!props.field) return
@@ -151,7 +152,7 @@
     const setNewValue = (newVal: string): void => {
         onLabelFieldChanged()
         onSizeFieldChanged()
-        onLineCountFieldChanged()
+        //onLineCountFieldChanged()
         onHorzLineFieldChanged()
         onVertLineFieldChanged()
         onErrorFieldChanged()
@@ -207,23 +208,25 @@
     }
 
     const textLen = computed(() => textVal.value?.length || 0)
-    const borderColor = computed(() => errorTxt.value === ''? 'border-is-light/55': 'border-red-700 focus:outline-none focus:border-red-400')
+    const borderColor = computed(() => errorTxt.value === ''? 'border-is-light/40': 'border-red-700 focus:outline-none focus:border-red-400')
     const sizeDisplay = computed(() => {
         switch(size.value){
             case -1:
-                return "border-1 text-xs"
+                return "border-1 text-[0.5rem] rounded-2xs"
             case 0:
-                return "border-1 text-sm"
+                return "border-1 text-xs rounded-xs"
             case 1:
-                return "border-2 text-base"
+                return "border-1 text-sm rounded-sm"
             case 2:
-                return "border-3 text-lg"
+                return "border-2 text-base rounded-md"
             case 3:
-                return "border-4 text-xl"
+                return "border-3 text-lg rounded-lg"
             case 4:
-                return "border-5 text-2xl"
+                return "border-4 text-xl rounded-xl"
             case 5:
-                return "border-6 text-3xl"
+                return "border-5 text-2xl rounded-2xl"
+            case 6:
+                return "border-6 text-3xl rounded-3xl"
         }
     })
     const mainGuides = computed(() => {
@@ -275,7 +278,7 @@
     <div class="m-0 p-0">
         <div class="relative flex" v-if="lineCount < 2">
             <input class="relative w-full box-border
-                    border-solid rounded-md px-1"
+                    border-solid py-[0.2rem] px-[0.5rem]"
                 :class="borderColor, sizeDisplay"
                 :placeholder="props.placeholder ? props.placeholder : ''"
                 :value="props.value ? props.value : textVal"
@@ -289,7 +292,7 @@
         </div>
         <div class="relative flex" v-else>
             <textarea class="relative w-full box-border resize-none
-                        border-solid rounded-md px-1"
+                        border-solid py-[0.2rem] px-[0.5rem]"
                     :class="borderColor, sizeDisplay"
                     @input="(e:Event)=>{onValueChanged((e.target as HTMLInputElement).value, e)}"
                     @keydown="keydown" 

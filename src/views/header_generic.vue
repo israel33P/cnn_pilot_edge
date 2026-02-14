@@ -10,52 +10,61 @@
 <script setup lang="ts">
   import type { ITemplate  } from '@/models';
   import TextBox from '@/components/TextBox.vue'
-  import RadioButtons from '@/components/RadioButtons.vue'
   import { onMounted, ref, computed } from 'vue'
   import { useRoute } from 'vue-router'
   import { PayloadHelper } from '@/helpers/PayloadHelper'
   import { useClipboard } from '@vueuse/core'
 
   const busy = ref(true)
+  const parentField = ref('HeaderFields')
   const showHeaderTxt = ref('0')
   const errorTxt = ref('')
   const errorSubTxt = ref('')
   const sizeDisplay = ref<[string,number]>(['text-sm',16])
   const sizeSubDisplay = ref<[string,number]>(['text-sm',16])
   const tempUrl = ref('{$PDS}/app/cnn/?template=header_generic')
+  
+  const test = ref('')
 
   const route = useRoute()
 
   const { copy, isSupported } = useClipboard( )
 
   onMounted(async () => {
-    PayloadHelper.initialise().then(() => (busy.value = false))
-    if (!busy.value) {
-      showHeaderTxt.value = PayloadHelper.getFieldText('HeaderFields/Omo')
-      showHeader;
-    }
+    PayloadHelper.initialise().then(() => {
+      busy.value = false
+      PayloadHelper.addFieldValueCallbacks({[ parentField.value+'/Omo']: onOmoFieldChanged })
+      onOmoFieldChanged()
+    })
   })
-
+  
+  const onOmoFieldChanged = () => {
+      const fieldVal = PayloadHelper.getFieldText(parentField.value+'/Omo')
+      showHeaderTxt.value = fieldVal
+  }
+    
   const onSizeChange = (size:number) => {
     switch(size){
-      case -1: sizeDisplay.value = ["text-xs",13];break;
-      case 0: sizeDisplay.value = ["text-sm",16];break;
-      case 1: sizeDisplay.value = ["text-base", 18];break;
-      case 2: sizeDisplay.value = ["text-lg",20];break;
-      case 3: sizeDisplay.value = ["text-xl",22];break;
-      case 4: sizeDisplay.value = ["text-2xl",24];break;
-      case 5: sizeDisplay.value = ["text-3xl",26];break;
+      case -1: sizeDisplay.value = ["text-[0.5rem]",9];break;
+      case 0: sizeDisplay.value = ["text-xs",13];break;
+      case 1: sizeDisplay.value = ["text-sm",16];break;
+      case 2: sizeDisplay.value = ["text-base", 18];break;
+      case 3: sizeDisplay.value = ["text-lg",20];break;
+      case 4: sizeDisplay.value = ["text-xl",22];break;
+      case 5: sizeDisplay.value = ["text-2xl",24];break;
+      case 6: sizeDisplay.value = ["text-3xl",26];break;
     }
   }
   const onSizeSubChange = (size:number) => {
     switch(size){
-      case -1: sizeSubDisplay.value = ["text-xs",13];break;
-      case 0: sizeSubDisplay.value = ["text-sm",16];break;
-      case 1: sizeSubDisplay.value = ["text-base", 18];break;
-      case 2: sizeDisplay.value = ["text-lg",20];break;
-      case 3: sizeSubDisplay.value = ["text-xl",22];break;
-      case 4: sizeSubDisplay.value = ["text-2xl",24];break;
-      case 5: sizeSubDisplay.value = ["text-3xl",26];break;
+      case -1: sizeSubDisplay.value = ["text-[0.5rem]",9];break;
+      case 0: sizeSubDisplay.value = ["text-xs",13];break;
+      case 1: sizeSubDisplay.value = ["text-sm",16];break;
+      case 2: sizeSubDisplay.value = ["text-base", 18];break;
+      case 3: sizeDisplay.value = ["text-lg",20];break;
+      case 4: sizeSubDisplay.value = ["text-xl",22];break;
+      case 5: sizeSubDisplay.value = ["text-2xl",24];break;
+      case 6: sizeSubDisplay.value = ["text-3xl",26];break;
     }
   }
   const onErrorChange = (errorText:string) => {
@@ -64,29 +73,17 @@
   const onErrorSubChange = (errorText:string) => {
     errorSubTxt.value = errorText
   }
-  const onHeaderRadioChange = (val: string) => {
-    showHeaderTxt.value = val
-  }
 
   const queryDev = computed(() => route.query.dev?.toString().toLowerCase() === 'true')
-  const showHeader = computed(() => showHeaderTxt.value !== '0')
+  const showHeader = computed(() => {console.log("a thing"); return showHeaderTxt.value !== '0';})
 </script>
 
 <template>
-  <div>
-    <RadioButtons v-if="!busy || queryDev"
-          field="HeaderFields/Omo"
-          @rb-selected="onHeaderRadioChange"
-          :radio-buttons="[
-            {label: 'OFF', value: '0'},
-            {label: 'ON', value: '1', color: 'border-cnn'},
-            {label: 'W/SUBTITLES', value: '2'}
-          ]"
-     />
-    <div v-if="showHeader">
+  <div v-if="!busy || queryDev">
+    <div>
       <!--HEADER-->
-      <p class="ml-1 mt-1 mb-0 pb-0" :class="sizeDisplay[0]">
-        TITLE
+      <p class="ml-0.5 mt-1 mb-0 pb-0" :class="sizeDisplay[0]">
+        Title
         <span class="text-red-500 italic ml-0.5" :class="sizeDisplay[0]" v-if="errorTxt!=''">
           <svg xmlns="http://www.w3.org/2000/svg" :height="sizeDisplay[1]" fill="currentColor" class="inline-flex" viewBox="0 0 16 16">
             <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
@@ -94,17 +91,17 @@
           {{ errorTxt }}
         </span>
       </p>
-      <TextBox field="HeaderFields/Title" v-if="!busy || queryDev"
+      <TextBox :field="parentField +'/Title'" v-if="!busy || queryDev"
           class="mb-1 w-full"
           @error-text="onErrorChange"
           @size-control="onSizeChange"
-          placeholder="TITLE HERE ALL UPPERCASE"
+          placeholder="TITLE"
           :default-line-count="parseInt('2')"
       />
-      <div v-if="showHeaderTxt === '2'">
+      <div class="py-0 my-0">
         <!--SUBTITLE-->
-        <p class="ml-1 mt-1 mb-0" :class="sizeSubDisplay[0]">
-          SUBTITLE
+        <p class="ml-0.5" :class="sizeSubDisplay[0]">
+          Subtitle
           <span class="text-red-500 italic ml-0.5" :class="sizeSubDisplay[0]" v-if="errorSubTxt!=''">
             <svg xmlns="http://www.w3.org/2000/svg" :height="sizeSubDisplay[1]" fill="currentColor" class="inline-flex" viewBox="0 0 16 16">
               <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
@@ -112,7 +109,7 @@
             {{ errorSubTxt }}
           </span>
         </p>
-        <TextBox field="HeaderFields/Subtitle" v-if="!busy || queryDev"
+        <TextBox :field="parentField +'/Subtitle'" v-if="!busy || queryDev"
             class="mb-1 w-full"
             @error-text="onErrorSubChange"
             @size-control="onSizeSubChange"
