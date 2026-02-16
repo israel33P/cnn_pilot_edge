@@ -1,119 +1,135 @@
 <script lang="ts">
   export const metadata: ITemplate = {
-    name: 'header',
-    description: 'This is the Header template',
-    concept: 'Z Startup',
+    name: 'header_generic',
+    description: 'This is the Generic Header template',
+    concept: '',
     author: 'Israel Sanchez',
-    updated: '06/24/2025',
+    updated: '02/03/2026',
   };
 </script>
 <script setup lang="ts">
   import type { ITemplate  } from '@/models';
-  import TextBox from '@/components/TextBoxOlder.vue'
-  import RadioButtons from '@/components/RadioButtons.vue'
+  import TextBox from '@/components/TextBox.vue'
   import { onMounted, ref, computed } from 'vue'
   import { useRoute } from 'vue-router'
   import { PayloadHelper } from '@/helpers/PayloadHelper'
+  import { useClipboard } from '@vueuse/core'
 
   const busy = ref(true)
-  const guidePositions = ref<number[]>([25,150,120])
+  const parentField = ref('HeaderFields')
   const showHeaderTxt = ref('0')
-  const titleLinesAmt = ref(0)
-
+  const errorTxt = ref('')
+  const errorSubTxt = ref('')
+  const sizeDisplay = ref<[string,number]>(['text-sm',16])
+  const sizeSubDisplay = ref<[string,number]>(['text-sm',16])
+  const tempUrl = ref('{$PDS}/app/cnn/?template=header_generic')
+  
   const route = useRoute()
 
+  const { copy, isSupported } = useClipboard( )
+
   onMounted(async () => {
-    PayloadHelper.initialise().then(() => (busy.value = false))
-    if (!busy.value) {
-      showHeaderTxt.value = PayloadHelper.getFieldText('fg2_TitleOmo');
-      showHeader;
-    }
+    PayloadHelper.initialise().then(() => {
+      busy.value = false
+      PayloadHelper.addFieldValueCallbacks({[ parentField.value+'/Omo']: onOmoFieldChanged })
+      onOmoFieldChanged()
+    })
   })
-
-  const onGuideControlChanged = async (val: string, idx: number) => {
-    if (val){
-      guidePositions.value[idx] = Number(val)
+  
+  const onOmoFieldChanged = () => {
+      const fieldVal = PayloadHelper.getFieldText(parentField.value+'/Omo')
+      showHeaderTxt.value = fieldVal
+  }
+    
+  const onSizeChange = (size:number) => {
+    switch(size){
+      case -1: sizeDisplay.value = ["text-[0.5rem]",9];break;
+      case 0: sizeDisplay.value = ["text-xs",13];break;
+      case 1: sizeDisplay.value = ["text-sm",16];break;
+      case 2: sizeDisplay.value = ["text-base", 18];break;
+      case 3: sizeDisplay.value = ["text-lg",20];break;
+      case 4: sizeDisplay.value = ["text-xl",22];break;
+      case 5: sizeDisplay.value = ["text-2xl",24];break;
+      case 6: sizeDisplay.value = ["text-3xl",26];break;
     }
   }
-
-  const onTitleLineAmtChanged = (num: Number) => {
-    console.log(num.toString())
-    console.log("Testing")
+  const onSizeSubChange = (size:number) => {
+    switch(size){
+      case -1: sizeSubDisplay.value = ["text-[0.5rem]",9];break;
+      case 0: sizeSubDisplay.value = ["text-xs",13];break;
+      case 1: sizeSubDisplay.value = ["text-sm",16];break;
+      case 2: sizeSubDisplay.value = ["text-base", 18];break;
+      case 3: sizeDisplay.value = ["text-lg",20];break;
+      case 4: sizeSubDisplay.value = ["text-xl",22];break;
+      case 5: sizeSubDisplay.value = ["text-2xl",24];break;
+      case 6: sizeSubDisplay.value = ["text-3xl",26];break;
+    }
   }
-
-  const onHeaderRadioChange = (val: string) => {
-    showHeaderTxt.value = val
+  const onErrorChange = (errorText:string) => {
+    errorTxt.value = errorText
+  }
+  const onErrorSubChange = (errorText:string) => {
+    errorSubTxt.value = errorText
   }
 
   const queryDev = computed(() => route.query.dev?.toString().toLowerCase() === 'true')
-  const showHeader = computed(() => {
-    let isHeader: boolean = showHeaderTxt.value !== '0'
-    /*if (isHeader && !busy.value) {
-      PayloadHelper.setFieldText('-vizlayer-FG2', 'fg2_title_sub')
-      PayloadHelper.setFieldText('bg2_FrameOmo', '1')
-      PayloadHelper.setFieldText('fg2_TitleOmo', '0')
-    } else if (!busy.value) {
-      PayloadHelper.setFieldText('-vizlayer-FG2', 'fg2_out')
-      PayloadHelper.setFieldText('bg2_FrameOmo', '0')
-      PayloadHelper.setFieldText('fg2_TitleOmo', '2')
-    }*/
-
-    if (showHeaderTxt.value === '2' && !busy.value) {
-      //PayloadHelper.setFieldText('bg2_SubOmo', '1')
-      //PayloadHelper.setFieldText('fg2_TitleOmo', '1')
-      titleLinesAmt.value = 2
-    } else if (!busy.value) {
-      //PayloadHelper.setFieldText('bg2_SubOmo', '0')
-      titleLinesAmt.value = 3
-    }
-
-    return isHeader
-  })
 </script>
 
 <template>
-  <div>
-    <h4 class="mb-0.5">Header</h4>
-    <RadioButtons v-if="!busy || queryDev"
-          field="fg2_TitleOmo"
-          @rb-selected="onHeaderRadioChange"
-          :radio-buttons="[
-            {label: 'OFF', value: '0'},
-            {label: 'ON', value: '1', color: 'border-cnn'},
-            {label: 'W/SUBTITLES', value: '2'}
-          ]"
-     />
-    <div v-if="showHeader">
-      <p class="text-lg ml-1 mt-1 mb-0">TITLE</p>
-      <TextBox field="Title" v-if="!busy || queryDev"
+  <div v-if="!busy || queryDev">
+    <div>
+      <!--HEADER-->
+      <p class="ml-0.5 mb-0 pb-0" :class="sizeDisplay[0]">
+        Title
+        <span class="text-red-500 italic ml-0.5" :class="sizeDisplay[0]" v-if="errorTxt!=''">
+          <svg xmlns="http://www.w3.org/2000/svg" :height="sizeDisplay[1]" fill="currentColor" class="inline-flex" viewBox="0 0 16 16">
+            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
+          </svg>
+          {{ errorTxt }}
+        </span>
+      </p>
+      <TextBox :field="parentField +'/Title'" v-if="!busy || queryDev"
           class="mb-1 w-full"
-          @number-of-lines="onTitleLineAmtChanged"
-          placeholder="TITLE HERE ALL UPPERCASE"
-          :max-lines="titleLinesAmt"
-          :guides="[
-            { position: guidePositions[0], color: 'rgb(0, 190, 0)', alignment: 'horizontal' },
-            { position: guidePositions[1] }
-          ]"
+          @error-text="onErrorChange"
+          @size-control="onSizeChange"
+          placeholder="TITLE"
+          :default-line-count="parseInt('2')"
       />
-      <div v-if="showHeaderTxt === '2'">
-        <p class="text-lg ml-1 mt-1 mb-0">SUBTITLE</p>
-        <TextBox field="Subtitle" v-if="!busy || queryDev"
+      <div class="py-0 my-0">
+        <!--SUBTITLE-->
+        <p class="ml-0.5" :class="sizeSubDisplay[0]">
+          Subtitle
+          <span class="text-red-500 italic ml-0.5" :class="sizeSubDisplay[0]" v-if="errorSubTxt!=''">
+            <svg xmlns="http://www.w3.org/2000/svg" :height="sizeSubDisplay[1]" fill="currentColor" class="inline-flex" viewBox="0 0 16 16">
+              <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
+            </svg>
+            {{ errorSubTxt }}
+          </span>
+        </p>
+        <TextBox :field="parentField +'/Subtitle'" v-if="!busy || queryDev"
             class="mb-1 w-full"
-            capitalize="true"
+            @error-text="onErrorSubChange"
+            @size-control="onSizeSubChange"
             placeholder="SUBTITLE"
-            :guides="[
-              {position: guidePositions[2]}
-            ]"
         />
       </div>
     </div>
     <div v-if="queryDev">
       <hr class="mt-5 mb-1">
-      <div class="grid grid-cols-5 gap-2 pb-21.25">
-        <div class="card flex flex-col" v-for="n in 3" :key="n">
-          <label class="card-title mb-1">Guide Controls: #{{ n }}</label>
-          <input class="card-body px-1 mx-0.5 w-auto border rounded-md border-white" type="number" min="0" max="700" step="1" :value="guidePositions[n-1]"
-              @input="(e:Event)=>{onGuideControlChanged((e.target as HTMLInputElement).value, n-1)}">
+      <div class="grid grid-cols-1 gap-2 pb-21.25">
+        <div class="card flex flex-col mt-2">
+          <label class="card-title mb-1">
+            Component URL:
+            <p @click="copy(tempUrl)" class="flex gap-1 font-medium text-is-light-m/85 text-lg mt-1 cursor-pointer" v-if="isSupported">
+              <span class="font-light">
+                <svg xmlns="http://www.w3.org/2000/svg" class=" h-2" fill="currentColor" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
+                </svg>
+              </span> 
+              {{ tempUrl }}
+            </p>
+            <p class="font-medium text-is-light-m/85 text-lg mt-1" v-else>{{ tempUrl }}</p>
+          </label>
         </div>
       </div>
     </div>

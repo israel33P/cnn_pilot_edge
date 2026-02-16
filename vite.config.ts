@@ -13,9 +13,9 @@ export default defineConfig({
   server: {
     allowedHosts: ['vizedge-pds-dev.tbsbest.com'],
   },
-  base: process.env.NODE_ENV === 'production' ? '/app/cnn/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/app/cnn/generic' : '/',
   build: {
-    outDir: 'cnn',
+    outDir: 'cnn/generic',
   },
   resolve: {
     alias: {

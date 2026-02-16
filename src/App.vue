@@ -74,7 +74,7 @@
 </script>
 
 <template>
-  <div v-if="templateGroups.length > 0">
+  <div v-if="templateGroups.length > 0" class="p-0 m-0">
     <Router />
   </div>
 </template>

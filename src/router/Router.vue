@@ -47,8 +47,8 @@
 
 <template>
     <NavBar v-if="isDev" title="Pilot Edge Components" :concept="concept"></NavBar>
-    <div class="flex" :class="mainWindowPosition">
-        <div class="w-full">
+    <div class="flex p-0 m-0" :class="mainWindowPosition">
+        <div class="w-full p-0 m-0">
             <div v-if="name !='' && isDev" class="grid grid-cols-1 place-items-center mb-6 pt-3">
                 <p class="text-4xl font-thin lg:text-6xl">{{ name }}</p>
                 <p v-if="description !=''" class="text-sm mt-1 font-thin lg:text-lg">{{ description }}</p>
