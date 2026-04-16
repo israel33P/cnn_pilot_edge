@@ -162,15 +162,14 @@ export class PayloadHelper {
    * Checks whether a fiels exists with a given fieldId
    * @function PayloadHelper#fieldExists
    * @param {string} fieldId - The ID of the field
-   * @param {boolean} showWarning - Default is True, if true browser console will report warning.
    * @returns {boolean} True if the field exists, false otherwise
    */
-  public static fieldExists(fieldId: string, showWarning: boolean = true): boolean {
+  public static fieldExists(fieldId: string): boolean {
     try {
       if (!PayloadHelper.object().fieldExists(fieldId)) throw new FieldNotExistsError();
       return true;
     } catch (error) {
-      if (showWarning && error instanceof FieldNotExistsError) {
+      if (error instanceof FieldNotExistsError) {
         console.error(`${error.name}: ${error.message} for field ${fieldId}`);
       }
       return false;
@@ -272,7 +271,7 @@ export class PayloadHelper {
    *    the id of the field and the value is the corresponding function to be
    *    called when the field changes.
    */
-  public static addFieldValueCallbacks(callbacks: { [key: string]: (value: string | Element | null) => void }): void {
+  public static addFieldValueCallbacks(callbacks: { [key: string]: (value: string) => void }): void {
     if (!PayloadHelper.ready()) return;
     PayloadHelper.object()._fieldValueCallbacks = PayloadHelper.object()._fieldValueCallbacks || {};
     PayloadHelper.object().addFieldValueCallbacks(callbacks);
@@ -282,14 +281,13 @@ export class PayloadHelper {
    * Gets the text content of a field
    * @function PayloadHelper#getFieldText
    * @param {string} fieldId - The field id
-   * @param {boolean} showWarning - Default is True, if true browser console will report warning.
    * @returns {string} The value of the field
    * @throws {Error} Throws an <code>Error</code> if not <code>[ready]{@link PayloadHelper#ready}()</code>.
    * @throws {Error} Throws an <code>Error</code> if not <code>[fieldExists]{@link PayloadHelper#fieldExists}()</code>.
    */
-  public static getFieldText(fieldId: string, showWarning: boolean = true): string {
+  public static getFieldText(fieldId: string): string {
     if (!PayloadHelper.ready()) return '';
-    if (!PayloadHelper.fieldExists(fieldId, showWarning)) return '';
+    if (!PayloadHelper.fieldExists(fieldId)) return '';
     return PayloadHelper.object().getFieldText(fieldId);
   }
 
@@ -326,29 +324,12 @@ export class PayloadHelper {
    * @function PayloadHelper#setFieldText
    * @param {string} fieldId - The field id.
    * @param {string} value - The new value of the field.
-   * @param {boolean} showWarning - Default is True, if true browser console will report warning.
    * @throws {Error} Throws an <code>Error</code> if not <code>[ready]{@link PayloadHelper#ready}()</code>.
    * @throws {Error} Throws an <code>Error</code> if not <code>[fieldExists]{@link PayloadHelper#fieldExists}()</code>.
    */
-  public static setFieldText(fieldId: string, value: string | null, showWarning: boolean = true): void {
+  public static setFieldText(fieldId: string, value: string | null): void {
     if (!PayloadHelper.ready()) return;
-    if (!PayloadHelper.fieldExists(fieldId, showWarning)) return;
-    const mediaType = this.getFieldMediaType(fieldId);
-    if (mediaType.includes('+xml')) {
-      console.warn(`setFieldText called on XML field "${fieldId}" (${mediaType}). Routing through setFieldXml.`);
-      if (value && !PayloadHelper.isXmlInput(value)) {
-        const fieldType = this.getFieldType(fieldId);
-        if (fieldType === FIELD_TYPES.image) {
-          PayloadHelper.setImage(fieldId, value);
-          return;
-        } else if (fieldType === FIELD_TYPES.video) {
-          PayloadHelper.setVideo(fieldId, value);
-          return;
-        }
-      }
-      PayloadHelper.setFieldXml(fieldId, value);
-      return;
-    }
+    if (!PayloadHelper.fieldExists(fieldId)) return;
     functionQueue.enqueue({ func: () => PayloadHelper.object().setFieldText(fieldId, value ?? ''), fieldId });
   }
 

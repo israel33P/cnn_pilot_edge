@@ -40,6 +40,7 @@
     const horzLineColor = ref('#FFFFFF88')
     const errorTxt = ref('')
     const labelTxt = ref('')
+    const placeholderTxt = ref('')
 
     const keydownProps: {
         cursorPosition: {
@@ -59,14 +60,34 @@
 
     onMounted(() => {
         if (!props.field) return
-        if(props.defaultLineCount) lineCount.value = props.defaultLineCount
+        console.log(`Started Mounting: ${props.field}`)
+        // Initialize line count
+        if (props.defaultLineCount) setLineCount(props.defaultLineCount)
+        if (PayloadHelper.fieldExists(props.field+'/LineCount', false))
+            setLineCount(parseFloat(PayloadHelper.getFieldText(props.field+'/LineCount')) || lineCount.value)
+        // Initialize size value
+        if (PayloadHelper.fieldExists(props.field+'/Size', false))
+            setSize(parseFloat(PayloadHelper.getFieldText(props.field+'/Size')) || size.value)
+        // Initialize placeholder
+        placeholderTxt.value = props.placeholder || placeholderTxt.value
+        if (PayloadHelper.fieldExists(props.field+'/Placeholder', false))
+            placeholderTxt.value = PayloadHelper.getFieldText(props.field+'/Placeholder') ?? placeholderTxt.value
+        // Initialize other field values
+        labelTxt.value = PayloadHelper.getFieldText(props.field+'/Label', false) ?? labelTxt.value
+        errorTxt.value = PayloadHelper.getFieldText(props.field+'/Error', false) ?? errorTxt.value
+        capitalized.value = PayloadHelper.getFieldText(props.field+'/Cap', false)?.toLowerCase() ?? capitalized.value
+        vertLinePos.value = parseFloat(PayloadHelper.getFieldText(props.field+'/VLine', false)) || vertLinePos.value
+        vertLineColor.value = PayloadHelper.getFieldText(props.field+'/VLine/Color', false) || vertLineColor.value
+        horzLinePos.value = parseFloat(PayloadHelper.getFieldText(props.field+'/HLine', false)) || horzLinePos.value
+        horzLineColor.value = PayloadHelper.getFieldText(props.field+'/HLine/Color', false) || horzLineColor.value
+        // Register callbacks for field changes
         PayloadHelper.addFieldValueCallbacks({ [props.field]: onFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/Label']: onLabelFieldChanged })
+        PayloadHelper.addFieldValueCallbacks({ [props.field+'/Placeholder']: onPlaceholderFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/LineCount']: onLineCountFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/Error']: onErrorFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/Cap']: onCapFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/Size']: onSizeFieldChanged })
-
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/VLine']: onVertLineFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/VLine/Color']: onVertLineFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/HLine']: onHorzLineFieldChanged })
@@ -78,6 +99,16 @@
         // maybe needed
     })
 
+    function setLineCount(count: number) {
+        if (count < 1) count = 1 
+        lineCount.value = count
+    }
+    function setSize(val: number) {
+        if (val < -1) val = -1 
+        if (val > 5) val = 5
+        size.value = val
+    }
+    
     const keydown = ({ target, key }: KeyboardEvent) => {
         keydownProps.key = key
         keydownProps.cursorPosition.start = (target as HTMLInputElement).selectionStart || 0
@@ -91,42 +122,45 @@
         setNewValue(fieldVal)
     }
     const onLineCountFieldChanged = () => {
-        if (!props.field) return
-        let tempCount: number = parseFloat(PayloadHelper.getFieldText(props.field+'/LineCount')) || lineCount.value
-        if (tempCount < 1) tempCount = 1
-        lineCount.value = tempCount
+        if (!props.field || !PayloadHelper.fieldExists(props.field+'/LineCount', false)) return
+        let temp: number = parseFloat(PayloadHelper.getFieldText(props.field+'/LineCount')) || lineCount.value
+        setLineCount(temp)
         onFieldChanged()
     }
     const onSizeFieldChanged = () => {
-        if (!props.field) return
+        if (!props.field || !PayloadHelper.fieldExists(props.field+'/Size', false)) return
         let tempSize:number = parseFloat(PayloadHelper.getFieldText(props.field+'/Size')) || 0
-        if(tempSize < -1) tempSize = -1
-        if(tempSize > 5) tempSize = 5
-        size.value = tempSize
+        setSize(tempSize)
     }
     const onErrorFieldChanged = () => {
-        if (!props.field) return
+        if (!props.field || !PayloadHelper.fieldExists(props.field+'/Error', false)) return
         errorTxt.value = PayloadHelper.getFieldText(props.field+'/Error') || ''
     }
     const onLabelFieldChanged = () => {
-        if (!props.field) return
+        if (!props.field || !PayloadHelper.fieldExists(props.field+'/Label', false)) return
         labelTxt.value = PayloadHelper.getFieldText(props.field+'/Label') || ''
     }
+    const onPlaceholderFieldChanged = () => {
+        if (!props.field || !PayloadHelper.fieldExists(props.field+'/Placeholder', false)) return
+        placeholderTxt.value = PayloadHelper.getFieldText(props.field+'/Placeholder') || ''
+    }
     const onCapFieldChanged = () => {
-        if (!props.field) return
+        if (!props.field || !PayloadHelper.fieldExists(props.field+'/Cap', false)) return
         const fieldVal = PayloadHelper.getFieldText(props.field)
         capitalized.value = PayloadHelper.getFieldText(props.field+'/Cap').toLowerCase() || ''
         setNewValue(fieldVal)
     }
     const onVertLineFieldChanged = () => {
-        if (!props.field) return
+        if (!props.field || !PayloadHelper.fieldExists(props.field+'/VLine', false)) return
         vertLinePos.value = parseFloat(PayloadHelper.getFieldText(props.field+'/VLine')) || 0
-        vertLineColor.value = PayloadHelper.getFieldText(props.field+'/VLine/Color') || '#FFFFFF88'
+        if (PayloadHelper.fieldExists(props.field+'/VLine/Color', false))
+            vertLineColor.value = PayloadHelper.getFieldText(props.field+'/VLine/Color') || '#FFFFFF88'
     }
     const onHorzLineFieldChanged = () => {
-        if (!props.field) return
+        if (!props.field || !PayloadHelper.fieldExists(props.field+'/HLine', false)) return
         horzLinePos.value = parseFloat(PayloadHelper.getFieldText(props.field+'/HLine')) || 0
-        horzLineColor.value = PayloadHelper.getFieldText(props.field+'/HLine/Color') || '#FFFFFF88'
+        if (PayloadHelper.fieldExists(props.field+'/HLine/Color', false))
+            horzLineColor.value = PayloadHelper.getFieldText(props.field+'/HLine/Color') || '#FFFFFF88'
     }
 
     const onValueChanged = async (val: string, {target}: Event) => {
@@ -167,9 +201,13 @@
             if (updatedVal !== PayloadHelper.getFieldText(props.field)){
                 PayloadHelper.setFieldText(props.field, linesLimit(updatedVal))
             }
-            if (capitalized.value !== PayloadHelper.getFieldText(props.field+'/Cap').toLowerCase()){
+            if (
+                PayloadHelper.fieldExists(props.field+'/Cap', false) &&
+                capitalized.value !== PayloadHelper.getFieldText(props.field+'/Cap', false).toLowerCase()
+            ){
                 PayloadHelper.setFieldText(props.field+'/Cap', capitalized.value)
             }
+           //if(PayloadHelper.fieldExists('test2')) console.log(PayloadHelper.getFieldText('test2'))
         }
     }
 
@@ -232,7 +270,7 @@
     const mainGuides = computed(() => {
         type Styling = { style: string, align: string, pos: number}
         const outArr: Styling[] = []
-        if (vertLinePos.value !== 0) {
+        if (vertLinePos.value && vertLinePos.value !== 0) {
             let lineStyle: string = `border-left: 2px solid ${vertLineColor.value};`+
                 'position: absolute; z-index: 2;' +
                 'margin-left: -1px;' +
@@ -241,7 +279,7 @@
                 `left:${vertLinePos.value}px;`
             outArr.push({style:lineStyle, align:'vertical', pos:vertLinePos.value})
         }
-        if (horzLinePos.value !== 0) {
+        if (horzLinePos.value &&  horzLinePos.value !== 0) {
             let lineStyle: string = `border-top: 2px solid ${horzLineColor.value};`+
                 'position: absolute; z-index: 2;' +
                 'margin-top: -1px;' +
@@ -280,8 +318,8 @@
             <input class="relative w-full box-border
                     border-solid py-[0.2rem] px-[0.5rem]"
                 :class="borderColor, sizeDisplay"
-                :placeholder="props.placeholder ? props.placeholder : ''"
-                :value="props.value ? props.value : textVal"
+                :placeholder="placeholderTxt ?? ''"
+                :value="props.value ?? textVal"
                 type="text"
                 @keydown="keydown"
                 @input="(e: Event)=>{onValueChanged((e.target as HTMLInputElement).value, e)}"
@@ -297,9 +335,9 @@
                     @input="(e:Event)=>{onValueChanged((e.target as HTMLInputElement).value, e)}"
                     @keydown="keydown" 
                     wrap="off"
-                    :placeholder="props.placeholder ? props.placeholder : ''"
-                    :value="props.value ? props.value : textVal"
-                    :rows="props.heightByLines ? props.heightByLines : lineCount"
+                    :placeholder="placeholderTxt ?? ''"
+                    :value="props.value ?? textVal"
+                    :rows="props.heightByLines ?? lineCount"
             ></textarea>
             <div class="GuideGrp" v-for="(val, idx) in mainGuides" :key="idx">
                 <div :style="val.style" />

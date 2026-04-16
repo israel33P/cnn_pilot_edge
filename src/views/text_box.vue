@@ -17,7 +17,7 @@
 
   const busy = ref(true)
   const errorTxt = ref('')
-  const labelTxt = ref('TITLE')
+  const labelTxt = ref('')
   const tempUrl = ref('{$PDS}/app/cnn/?template=text_box')
 
   const route = useRoute()

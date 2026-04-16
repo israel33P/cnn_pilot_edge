@@ -2,10 +2,10 @@
   import { onMounted, ref, watch } from 'vue';
   import { useRouter } from 'vue-router';
 
-  import TemplateHelper from './helpers/TemplateHelper';
-  import tempList from './helpers/TemplateList';
-  import type { ITemplate, ITemplateGroup } from './models';
-  import Router from './router/Router.vue';
+  import TemplateHelper from '@/helpers/TemplateHelper';
+  import tempList from '@/helpers/TemplateList';
+  import type { ITemplate, ITemplateGroup } from '@/models';
+  import Router from '@/router/Router.vue';
 
   interface ComponentMap { [key: string]: any; }
 

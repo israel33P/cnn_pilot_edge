@@ -18,6 +18,9 @@
   const busy = ref(true)
   const parentField = ref('HeaderFields')
   const showHeaderTxt = ref('0')
+  const hideSubtitle = ref(false)
+  const labelTxt = ref('Header')
+  const labelSubTxt = ref('')
   const errorTxt = ref('')
   const errorSubTxt = ref('')
   const sizeDisplay = ref<[string,number]>(['text-sm',16])
@@ -32,7 +35,9 @@
     PayloadHelper.initialise().then(() => {
       busy.value = false
       PayloadHelper.addFieldValueCallbacks({[ parentField.value+'/Omo']: onOmoFieldChanged })
+      PayloadHelper.addFieldValueCallbacks({[ parentField.value+'/HideSubtitle']: onHideSubtitleFieldChanged })
       onOmoFieldChanged()
+      onHideSubtitleFieldChanged()
     })
   })
   
@@ -40,7 +45,17 @@
       const fieldVal = PayloadHelper.getFieldText(parentField.value+'/Omo')
       showHeaderTxt.value = fieldVal
   }
-    
+  const onHideSubtitleFieldChanged = () => {
+    PayloadHelper.fieldExists(parentField.value+'/HideSubtitle', false)
+      hideSubtitle.value = PayloadHelper.getFieldText(parentField.value+'/HideSubtitle') === 'true'
+  }
+  
+  const onLabelSubChange = (label:string) => {
+    labelSubTxt.value = label
+  }
+  const onLabelChange = (label:string) => {
+    labelTxt.value = label
+  }
   const onSizeChange = (size:number) => {
     switch(size){
       case -1: sizeDisplay.value = ["text-[0.5rem]",9];break;
@@ -80,9 +95,9 @@
     <div>
       <!--HEADER-->
       <p class="ml-0.5 mb-0 pb-0" :class="sizeDisplay[0]">
-        Title
+        {{ labelTxt }}
         <span class="text-red-500 italic ml-0.5" :class="sizeDisplay[0]" v-if="errorTxt!=''">
-          <svg xmlns="http://www.w3.org/2000/svg" :height="sizeDisplay[1]" fill="currentColor" class="inline-flex" viewBox="0 0 16 16">
+          <svg xmlns="http://www.w3.org/2000/svg" :height="sizeDisplay[1]" fill="currentColor" class="inline-flex mb-0.5" viewBox="0 0 16 16">
             <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
           </svg>
           {{ errorTxt }}
@@ -92,15 +107,16 @@
           class="mb-1 w-full"
           @error-text="onErrorChange"
           @size-control="onSizeChange"
-          placeholder="TITLE"
+          @label-text="onLabelChange"
+          placeholder="Title"
           :default-line-count="parseInt('2')"
       />
-      <div class="py-0 my-0">
+      <div class="py-0 my-0" v-if="!hideSubtitle">
         <!--SUBTITLE-->
         <p class="ml-0.5" :class="sizeSubDisplay[0]">
-          Subtitle
+          {{ labelSubTxt }}
           <span class="text-red-500 italic ml-0.5" :class="sizeSubDisplay[0]" v-if="errorSubTxt!=''">
-            <svg xmlns="http://www.w3.org/2000/svg" :height="sizeSubDisplay[1]" fill="currentColor" class="inline-flex" viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" :height="sizeSubDisplay[1]" fill="currentColor" class="inline-flex mb-0.5" viewBox="0 0 16 16">
               <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
             </svg>
             {{ errorSubTxt }}
@@ -110,6 +126,7 @@
             class="mb-1 w-full"
             @error-text="onErrorSubChange"
             @size-control="onSizeSubChange"
+            @label-text="onLabelSubChange"
             placeholder="SUBTITLE"
         />
       </div>
