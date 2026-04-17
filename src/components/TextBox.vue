@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { computed, onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
+    import { computed, onMounted, ref, watch, nextTick } from 'vue'
     import { PayloadHelper } from '@/helpers/PayloadHelper'
     import type { CapsType } from '@/types'
 
@@ -80,6 +80,7 @@
         vertLineColor.value = PayloadHelper.getFieldText(props.field+'/VLine/Color', false) || vertLineColor.value
         horzLinePos.value = parseFloat(PayloadHelper.getFieldText(props.field+'/HLine', false)) || horzLinePos.value
         horzLineColor.value = PayloadHelper.getFieldText(props.field+'/HLine/Color', false) || horzLineColor.value
+        onFieldChanged()
         // Register callbacks for field changes
         PayloadHelper.addFieldValueCallbacks({ [props.field]: onFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/Label']: onLabelFieldChanged })
@@ -92,11 +93,7 @@
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/VLine/Color']: onVertLineFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/HLine']: onHorzLineFieldChanged })
         PayloadHelper.addFieldValueCallbacks({ [props.field+'/HLine/Color']: onHorzLineFieldChanged })
-        onCapFieldChanged()
-    })
-
-    onUnmounted(() => {
-        // maybe needed
+        //console.log(`Finished Mounting: ${textVal.value}`)
     })
 
     function setLineCount(count: number) {
@@ -336,8 +333,8 @@
                     @keydown="keydown" 
                     wrap="off"
                     :placeholder="placeholderTxt ?? ''"
-                    :value="props.value ?? textVal"
-                    :rows="props.heightByLines ?? lineCount"
+                    :value="textVal"
+                    :rows="props.heightByLines || lineCount"
             ></textarea>
             <div class="GuideGrp" v-for="(val, idx) in mainGuides" :key="idx">
                 <div :style="val.style" />

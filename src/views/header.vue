@@ -47,7 +47,7 @@
   }
   const onHideSubtitleFieldChanged = () => {
     PayloadHelper.fieldExists(parentField.value+'/HideSubtitle', false)
-      hideSubtitle.value = PayloadHelper.getFieldText(parentField.value+'/HideSubtitle') === 'true'
+      hideSubtitle.value = PayloadHelper.getFieldText(parentField.value+'/HideSubtitle')?.toLowerCase() === 'true'
   }
   
   const onLabelSubChange = (label:string) => {
@@ -94,7 +94,7 @@
   <div v-if="!busy || queryDev">
     <div>
       <!--HEADER-->
-      <p class="ml-0.5 mb-0 pb-0" :class="sizeDisplay[0]">
+      <p class="ml-[0.4rem] mb-0 pb-0" :class="sizeDisplay[0]">
         {{ labelTxt }}
         <span class="text-red-500 italic ml-0.5" :class="sizeDisplay[0]" v-if="errorTxt!=''">
           <svg xmlns="http://www.w3.org/2000/svg" :height="sizeDisplay[1]" fill="currentColor" class="inline-flex mb-0.5" viewBox="0 0 16 16">
@@ -113,7 +113,7 @@
       />
       <div class="py-0 my-0" v-if="!hideSubtitle">
         <!--SUBTITLE-->
-        <p class="ml-0.5" :class="sizeSubDisplay[0]">
+        <p class="ml-[0.4rem] mb-0 pb-0" :class="sizeSubDisplay[0]">
           {{ labelSubTxt }}
           <span class="text-red-500 italic ml-0.5" :class="sizeSubDisplay[0]" v-if="errorSubTxt!=''">
             <svg xmlns="http://www.w3.org/2000/svg" :height="sizeSubDisplay[1]" fill="currentColor" class="inline-flex mb-0.5" viewBox="0 0 16 16">

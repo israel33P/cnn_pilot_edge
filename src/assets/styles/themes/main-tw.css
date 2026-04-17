@@ -1,7 +1,7 @@
 @theme {
   --color-cnn: #cc0000;
   --color-is-light-m: hsl(0, 16%, 96%);
-  --color-is-dark-m: hsl(202, 16%, 16%);
+  --color-is-dark-m: #262b2e;
   --color-is-light: white;
   --color-is-gray: #404040;
   --color-is-dark: #353535;

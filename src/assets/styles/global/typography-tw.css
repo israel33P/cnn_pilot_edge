@@ -22,7 +22,7 @@
   }
 
   hr {
-    @apply border-0 border-t-[2px]
+    @apply border-0 border-t-2
         border-t-is-light border-solid;
   }
 
