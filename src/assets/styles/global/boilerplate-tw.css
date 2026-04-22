@@ -9,9 +9,14 @@
     box-sizing: inherit;
     color: inherit;
   }
+
+  * {
+    @apply m-0 p-0;
+  }
+
   body {
     @apply m-0 p-0;
-    background-color: var(--color-is-dark-m);
+    background-color: var(--color-empty);
     color: var(--color-is-light-m);
   }
 }

@@ -34,7 +34,7 @@
         }
     });
     const mainWindowPosition = computed(() => {
-        return dev.value == 'true' ? 'mt-[55px] pt-3 mx-5' : 'm-1 p-0 relative';
+        return dev.value == 'true' ? 'mt-[55px] pt-3 mx-5' : 'm-0 p-0 relative';
     });
     const isDev = computed(() => {
         return dev.value == 'true';
